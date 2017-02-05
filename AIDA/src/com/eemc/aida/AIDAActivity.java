@@ -153,7 +153,16 @@ public class AIDAActivity extends Activity
 						byte[]co=Utils.cp(basecode,i*2,2);
 						codes+=Utils.b2hex(co)+":"+Utils.disassemble(0,Utils.b2i(co))+"\n";
 					}
-					Dialog d=new Dialog(self,"汇编代码",codes);
+					AlertDialog.Builder d=new AlertDialog.Builder(self);
+					LinearLayout l=new LinearLayout(self);
+					TextView fucName=new TextView(self);
+					fucName.setText("全名:\n"+sym.name);
+					l.addView(fucName);
+					TextView codeView=new TextView(self);
+					codeView.setText("汇编:\n"+codes);
+					l.addView(codeView);
+					l.setOrientation(1);
+					d.setView(l);
 					d.show();
 					}
 				}
