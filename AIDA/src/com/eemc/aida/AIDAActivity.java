@@ -138,12 +138,11 @@ public class AIDAActivity extends Activity
 				{
 					symbol sym=syms.get(symad.showing.get(p3));
 					if(sym.type==2){
-					setCardView(1);
-					int addr=sym.value;
-					int s=sym.size;
-					if(s==0){
-						s=1;
-					}
+						int addr=sym.value;
+						int s=sym.size;
+						if(s==0){
+							s=1;
+						}
 					vhex.setChoose(addr,s);
 					vhex.scrollToLine(addr/8);
 					vhex.memLine=addr/8;
@@ -162,6 +161,13 @@ public class AIDAActivity extends Activity
 					codeView.setText("汇编:\n"+codes);
 					l.addView(codeView);
 					l.setOrientation(1);
+					d.setPositiveButton("转到16进制视图",new DialogInterface.OnClickListener(){
+								@Override
+								public void onClick(DialogInterface p1,int p2){
+									setCardView(1);
+									// TODO: Implement this method
+								}
+							});
 					d.setView(l);
 					d.show();
 					}
