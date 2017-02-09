@@ -13,6 +13,7 @@ import com.gc.materialdesign.widgets.Dialog;
 import java.io.*;
 import java.util.*;
 import org.json.*;
+import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends Activity
 {
@@ -26,7 +27,7 @@ public class MainActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
 	{
         super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		WindowManager wm =(WindowManager)getSystemService(Context.WINDOW_SERVICE);
 		width = wm.getDefaultDisplay().getWidth();
 		height = wm.getDefaultDisplay().getHeight();
@@ -46,16 +47,13 @@ public class MainActivity extends Activity
 
 		mainlayout=new RelativeLayout(this);
         setContentView(mainlayout);
-		RelativeLayout toolbar=new RelativeLayout(this);
-		toolbar.setBackgroundColor(Color.parseColor("#1E88E5"));
-		toolbar.setGravity(Gravity.CENTER|Gravity.LEFT);
-		mainlayout.addView(toolbar,width,height/10);
-		TextView title=new TextView(this);
-		title.setTextSize(height/30);
-		title.setX(20);
-		title.setText("工程");
-		title.setTextColor(Color.WHITE);
-		toolbar.addView(title);
+		Toolbar tb=new Toolbar(this);
+		//tb.setNavigationIcon(R.drawable.ic_launcher);
+		tb.setTitle("AIDA");
+		tb.setSubtitle("工程");
+		tb.setTitleTextColor(Color.WHITE);
+		tb.setBackgroundColor(0xff1e88e5);
+		mainlayout.addView(tb,width,height/10);
 		
 		ScrollView plv=new ScrollView(this);
 		plv.setY(height/10);

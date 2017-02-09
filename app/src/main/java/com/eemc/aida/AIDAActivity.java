@@ -14,6 +14,8 @@ import com.gc.materialdesign.widgets.Dialog;
 import java.util.*;
 import android.text.*;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.internal.view.menu.*;
 
 public class AIDAActivity extends Activity
 {
@@ -54,27 +56,26 @@ public class AIDAActivity extends Activity
 		
 		mainlayout=new RelativeLayout(this);
         setContentView(mainlayout);
-		RelativeLayout toolbar=new RelativeLayout(this);
-		toolbar.setBackgroundColor(0xff1e88e5);
-		toolbar.setGravity(Gravity.CENTER|Gravity.LEFT);
-		mainlayout.addView(toolbar,width,height/10);
-		TextView title=new TextView(this);
-		title.setTextSize(height/30);
-		title.setX(20);
-		title.setText(path.substring(path.lastIndexOf("/")+1));
-		title.setTextColor(Color.WHITE);
-		toolbar.addView(title);
+		Toolbar tb=new Toolbar(this);
+		//tb.setLogo(R.drawable.ic_launcher);
+		tb.setTitle("AIDA");
+		tb.setSubtitle(path.substring(path.lastIndexOf("/")+1));
+		tb.setTitleTextColor(Color.WHITE);
+		tb.setBackgroundColor(0xff1e88e5);
+		mainlayout.addView(tb,width,height/10);
 		
 		pb=new ProgressBarCircularIndeterminate(this);
 		pb.setX(width-(2*height)/15-20);
+		pb.setY(height/20-height/30);
 		pb.setBackgroundColor(0xff5555ff);
-		toolbar.addView(pb,height/15,height/15);
+		mainlayout.addView(pb,height/15,height/15);
 		
 		showmenu=new ButtonFlat(this);
 		showmenu.setX(width-height/15-10);
+		showmenu.setY(height/20-height/30);
 		showmenu.setBackgroundColor(0xff1e88e5);
 		showmenu.setBackgroundResource(R.drawable.menu);
-		toolbar.addView(showmenu,height/15,height/15);
+		mainlayout.addView(showmenu,height/15,height/15);
 		menu=new PopupMenu(self,showmenu);
 		showmenu.setOnClickListener(new OnClickListener(){
 				@Override
