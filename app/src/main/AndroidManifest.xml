@@ -27,10 +27,6 @@
 		<activity android:name=".CrashActivity"
 			android:label="Crash"
 			android:process=":com.eemc.aida.crashactivity">
-			<intent-filter >
-                <action android:name="com.eemc.aida.crashactivity"/>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
     	</activity>
 	</application>
 
