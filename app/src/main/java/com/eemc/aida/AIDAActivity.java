@@ -36,7 +36,7 @@ public class AIDAActivity extends Activity
 	int symnum;
 	HashMap<Integer,RelativeLayout>vmap=new HashMap<Integer,RelativeLayout>();
 	HashMap<Integer,ButtonFlat>bfmap=new HashMap<Integer,ButtonFlat>();
-	MyHandler mhandler;
+	MyHandler mhandler=new MyHandler();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
