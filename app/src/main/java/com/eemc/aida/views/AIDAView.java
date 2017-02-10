@@ -20,12 +20,6 @@ public class AIDAView extends View
 	public void draw(Canvas canvas)
 	{
 		super.draw(canvas);
-	/*
-		 82b9e6:	b580      	push	{r7, lr}
-		 82b9e8:	f662 ebb0 	blx	68e14c <_ZN19AppPlatformListenerD2Ev@plt>
-		 82b9ec:	e8bd 4080 	ldmia.w	sp!, {r7, lr}
-		 82b9f0:	f2c9 bc12 	b.w	af5218 <_ZNSt6vectorI14EntityUniqueIDSaIS0_EE19_M_emplace_back_auxIJRKS0_EEEvDpOT_+0x1ae>
-	*/
 		drawText(canvas,"§0h§1e§2l§3l§4o §2wro§4ld",0,30,30);
 	}
 	
