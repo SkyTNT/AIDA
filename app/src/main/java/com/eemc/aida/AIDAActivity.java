@@ -151,17 +151,10 @@ public class AIDAActivity extends Activity
 					String codes="";
 					for(int i=0;i<sym.size/2;i++){
 						byte[]co=Utils.cp(basecode,i*2,2);
-						codes+=Utils.b2hex(co)+":"+Utils.disassemble(0,Utils.b2i(co))+"\n";
+						codes+=Utils.disassemble(0,Utils.b2i(co))+"\n";
 					}
 					AlertDialog.Builder d=new AlertDialog.Builder(self);
-					LinearLayout l=new LinearLayout(self);
-					TextView fucName=new TextView(self);
-					fucName.setText("全名:\n"+sym.name);
-					l.addView(fucName);
-					TextView codeView=new TextView(self);
-					codeView.setText("汇编:\n"+codes);
-					l.addView(codeView);
-					l.setOrientation(1);
+					d.setMessage("全名:\n"+sym.name+"汇编:\n"+codes);
 					d.setPositiveButton("转到16进制视图",new DialogInterface.OnClickListener(){
 								@Override
 								public void onClick(DialogInterface p1,int p2){
@@ -169,7 +162,6 @@ public class AIDAActivity extends Activity
 									// TODO: Implement this method
 								}
 							});
-					d.setView(l);
 					d.show();
 					}
 				}
