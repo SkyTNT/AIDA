@@ -179,9 +179,4 @@ public class MainActivity extends Activity
 		super.onDestroy();
 		Utils.saveFile(Utils.mainPath+"/projects",projects.toString().getBytes());
 	}
-	
-	static
-	{
-        System.loadLibrary("aida");
-    }
 }

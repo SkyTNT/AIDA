@@ -5,12 +5,15 @@
  	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	
     <application
+		android:name=".App"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:label="@string/app_name"
-            android:name=".MainActivity" >
+            android:name=".MainActivity"
+			android:process=":com.eemc.aida.mainactivity"
+			>
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,7 +21,16 @@
             </intent-filter>
         </activity>
 		<activity android:name=".AIDAActivity"
-			android:label="AIDA">
+			android:label="AIDA"
+			android:process=":com.eemc.aida.aidaactivity">
+    	</activity>
+		<activity android:name=".CrashActivity"
+			android:label="Crash"
+			android:process=":com.eemc.aida.crashactivity">
+			<intent-filter >
+                <action android:name="com.eemc.aida.crashactivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
     	</activity>
 	</application>
 
