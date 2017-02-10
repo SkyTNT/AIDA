@@ -1,10 +1,11 @@
 package com.eemc.aida;
 import android.app.*;
+import android.util.*;
+import java.util.*;
 
 public class App extends Application
 {
 	CrashHandler ch;
-	static int muid=android.os.Process.myUid();
 	@Override
 	public void onCreate()
 	{
