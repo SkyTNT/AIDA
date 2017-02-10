@@ -33,10 +33,8 @@ public class CrashActivity extends Activity
 	@Override
 	public void onBackPressed()
 	{
-		// TODO: Implement this method
-		Intent intent = new Intent(this, MainActivity.class);  
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  
-						Intent.FLAG_ACTIVITY_NEW_TASK);  
-		startActivity(intent); 
+		System.exit(0);
+		ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE); 
+		manager.killBackgroundProcesses("com.eemc.aida");
 	}
 }
