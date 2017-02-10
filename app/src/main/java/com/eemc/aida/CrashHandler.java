@@ -24,7 +24,7 @@ public class CrashHandler implements UncaughtExceptionHandler
                 Looper.prepare();
 				Intent intent = new Intent(ctx,CrashActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.putExtra("info","thread:"+p1.getName()+"\ninfo:"+p2.toString());
+				intent.putExtra("info","Thread:\t"+p1.getName()+"\nError:\t"+p2.toString());
 				ctx.startActivity(intent);
                 Looper.loop();      
             }      

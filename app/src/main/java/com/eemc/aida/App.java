@@ -3,12 +3,15 @@ import android.app.*;
 
 public class App extends Application
 {
+	CrashHandler ch;
 	static int muid=android.os.Process.myUid();
 	@Override
 	public void onCreate()
 	{
 		super.onCreate();
-		CrashHandler ch=new CrashHandler();
+		if(ch!=null){
+		ch=new CrashHandler();
+		}
 		ch.init(this);
 	}
 	static
