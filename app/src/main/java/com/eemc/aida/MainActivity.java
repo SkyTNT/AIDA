@@ -4,16 +4,19 @@ import android.app.*;
 import android.content.*;
 import android.graphics.*;
 import android.os.*;
+import android.support.v7.app.*;
+import android.support.v7.widget.*;
 import android.view.*;
-import android.view.ViewGroup.*;
+import android.view.View.*;
 import android.widget.*;
 import com.gc.materialdesign.views.*;
+import com.gc.materialdesign.widgets.*;
+import java.io.*;
+import org.json.*;
+
+import android.support.v7.widget.Toolbar;
 import android.widget.ScrollView;
 import com.gc.materialdesign.widgets.Dialog;
-import java.io.*;
-import java.util.*;
-import org.json.*;
-import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends Activity
 {
@@ -21,20 +24,31 @@ public class MainActivity extends Activity
 	LinearLayout plist;
 	JSONObject projects;
 	Activity self=this;
-	int width,height;
+	int width,height,sbheight;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
 	{
         super.onCreate(savedInstanceState);
+		mainlayout=new RelativeLayout(this);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		WindowManager wm =(WindowManager)getSystemService(Context.WINDOW_SERVICE);
 		width = wm.getDefaultDisplay().getWidth();
 		height = wm.getDefaultDisplay().getHeight();
 		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
 		if (resourceId > 0) {
-			height-=getResources().getDimensionPixelSize(resourceId);
+			sbheight=getResources().getDimensionPixelSize(resourceId);
+			height-=sbheight;
 		}
+		setContentView(mainlayout);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+           	getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			mainlayout.setFitsSystemWindows(true);
+			ViewGroup contentLayout = (ViewGroup)findViewById(android.R.id.content);
+			View statusBarView = new View(this);
+			contentLayout.addView(statusBarView,width,sbheight);
+			statusBarView.setBackgroundColor(0xff1e88e5);
+        }
 		
 		try
 		{
@@ -44,9 +58,6 @@ public class MainActivity extends Activity
 		{
 			Toast.makeText(this,""+e,Toast.LENGTH_LONG).show();
 		}
-
-		mainlayout=new RelativeLayout(this);
-        setContentView(mainlayout);
 		Toolbar tb=new Toolbar(this);
 		//tb.setNavigationIcon(R.drawable.ic_launcher);
 		tb.setTitle("AIDA");
@@ -172,7 +183,6 @@ public class MainActivity extends Activity
 			Toast.makeText(this,""+e,Toast.LENGTH_LONG).show();
 		}
 	}
-	
 	@Override
 	protected void onDestroy()
 	{

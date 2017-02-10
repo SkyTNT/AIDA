@@ -30,7 +30,7 @@ public class AIDAActivity extends Activity
 	HexView vhex;
 	SymbolAdapter symad;
 	Activity self=this;
-	int width,height;
+	int width,height,sbheight;
 	dump dumper;
 	Vector<symbol>syms=new Vector<symbol>();
 	int symnum;
@@ -45,17 +45,25 @@ public class AIDAActivity extends Activity
 		path=this.getIntent().getExtras().getString("path");
 		setTitle(path);
 		dumper=new dump(path);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		mainlayout=new RelativeLayout(this);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		WindowManager wm =(WindowManager)getSystemService(Context.WINDOW_SERVICE);
 		width = wm.getDefaultDisplay().getWidth();
 		height = wm.getDefaultDisplay().getHeight();
 		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
 		if (resourceId > 0) {
-			height-=getResources().getDimensionPixelSize(resourceId);
+			sbheight=getResources().getDimensionPixelSize(resourceId);
+			height-=sbheight;
 		}
-		
-		mainlayout=new RelativeLayout(this);
-        setContentView(mainlayout);
+		setContentView(mainlayout);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+           	getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			mainlayout.setFitsSystemWindows(true);
+			ViewGroup contentLayout = (ViewGroup)findViewById(android.R.id.content);
+			View statusBarView = new View(this);
+			contentLayout.addView(statusBarView,width,sbheight);
+			statusBarView.setBackgroundColor(0xff1e88e5);
+        }
 		Toolbar tb=new Toolbar(this);
 		//tb.setLogo(R.drawable.ic_launcher);
 		tb.setTitle("AIDA");
