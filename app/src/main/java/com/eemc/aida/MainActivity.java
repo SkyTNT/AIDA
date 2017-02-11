@@ -56,7 +56,13 @@ public class MainActivity extends Activity
 		}
 		catch (Exception e)
 		{
-			Toast.makeText(this,""+e,Toast.LENGTH_LONG).show();
+			try
+			{
+				projects = new JSONObject("{\"num\":0}");
+			}
+			catch (JSONException e2)
+			{}
+			Toast.makeText(this, "" + e, Toast.LENGTH_LONG).show();
 		}
 		Toolbar tb=new Toolbar(this);
 		//tb.setNavigationIcon(R.drawable.ic_launcher);
@@ -153,6 +159,7 @@ public class MainActivity extends Activity
 	}
 	
 	void initFiles() throws Exception{
+		copyBin();
 		File m=new File(Utils.mainPath);
 		if(!m.exists()){
 			m.mkdir();
@@ -160,10 +167,10 @@ public class MainActivity extends Activity
 		File pjs=new File(Utils.mainPath+"/projects");
 		if(!pjs.exists()){
 			pjs.createNewFile();
-			Utils.saveFile(Utils.mainPath+"/projects","{\"num\":0}".getBytes());
 		}
-			projects=new JSONObject(new String(Utils.readFile(Utils.mainPath+"/projects")));
-			copyBin();
+		String str=new String(Utils.readFile(Utils.mainPath+"/projects"));
+		
+		projects=new JSONObject(str);
 	}
 	
 	void copyBin(){

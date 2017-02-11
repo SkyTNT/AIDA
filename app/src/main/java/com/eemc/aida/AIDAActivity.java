@@ -105,7 +105,7 @@ public class AIDAActivity extends Activity
 							AlertDialog.Builder d=new AlertDialog.Builder(self);
 							final EditText kw=new EditText(self);
 							kw.setHint("关键字");
-							d.setTitle("搜索").setView(kw).setNegativeButton("确定", new DialogInterface.OnClickListener(){
+							d.setTitle("搜索").setView(kw).setCancelable(false).setNegativeButton("确定", new DialogInterface.OnClickListener(){
 									@Override
 									public void onClick(DialogInterface p1, int p2)
 									{
