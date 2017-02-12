@@ -121,6 +121,49 @@ public class AIDAActivity extends Activity
 								});
 							d.create().show();
 							break;
+							case 1:
+							AlertDialog.Builder d1=new AlertDialog.Builder(self);
+							final EditText addr=new EditText(self);
+							addr.setHint("地址(16进制)");
+							addr.addTextChangedListener(new TextWatcher(){
+									String sold="";
+									@Override
+									public void beforeTextChanged(CharSequence p1, int p2, int p3, int p4)
+									{
+										sold=p1.toString();
+									}
+
+									@Override
+									public void onTextChanged(CharSequence p1, int p2, int p3, int p4)
+									{
+										char[]replace=p1.toString().substring(p2,p2+p4).toCharArray();
+										for(char r:replace){
+											if(r!=0&&(r<'0'||r>'f')){
+												addr.setText(sold);
+												addr.setSelection(p2);
+											}
+										}
+									}
+
+									@Override
+									public void afterTextChanged(Editable p1)
+									{
+										
+									}
+								});
+							d1.setTitle("跳转").setView(addr).setCancelable(false).setNegativeButton("确定", new DialogInterface.OnClickListener(){
+									@Override
+									public void onClick(DialogInterface p1, int p2)
+									{
+										int address=Integer.parseInt(addr.getText().toString(),16);
+										vhex.setChoose(address,1);
+										vhex.scrollToLine(address/8);
+										vhex.memLine=address/8;
+										setCardView(1);
+									}
+								});
+							d1.create().show();
+							break;
 						default:break;
 					}
 					return false;
