@@ -102,7 +102,7 @@ public class AIDAActivity extends Activity
 				{
 					switch(p1.getItemId()){
 						case 0:
-							AlertDialog.Builder d=new AlertDialog.Builder(self);
+							AlertDialog.Builder d=new AlertDialog.Builder(self,R.style.Theme_AppCompat_Light_Dialog_Alert);
 							final EditText kw=new EditText(self);
 							kw.setHint("关键字");
 							d.setTitle("搜索").setView(kw).setCancelable(false).setNegativeButton("确定", new DialogInterface.OnClickListener(){
@@ -122,7 +122,7 @@ public class AIDAActivity extends Activity
 							d.create().show();
 							break;
 							case 1:
-							AlertDialog.Builder d1=new AlertDialog.Builder(self);
+							AlertDialog.Builder d1=new AlertDialog.Builder(self,R.style.Theme_AppCompat_Light_Dialog_Alert);
 							final EditText addr=new EditText(self);
 							addr.setHint("地址(16进制)");
 							addr.addTextChangedListener(new TextWatcher(){

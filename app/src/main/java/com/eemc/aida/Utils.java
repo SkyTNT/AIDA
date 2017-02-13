@@ -139,7 +139,7 @@ class FileChooser{
 	}
 	void start(){
 		final FileAdapter fa=new FileAdapter(con,path);
-		new AlertDialog.Builder(con).setTitle("选择文件").setAdapter(fa, new DialogInterface.OnClickListener(){
+		new AlertDialog.Builder(con,R.style.Theme_AppCompat_Light_Dialog_Alert).setTitle("选择文件").setAdapter(fa, new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface p1, int p2)
 				{
