@@ -9,12 +9,13 @@ public class CrashHandler implements UncaughtExceptionHandler
 {
 
 	Context ctx;
-	
-	public void init(Context ctx) {
-		this.ctx=ctx;
+
+	public void init(Context ctx)
+	{
+		this.ctx = ctx;
 		Thread.setDefaultUncaughtExceptionHandler(this);
 	}
-	
+
 	@Override
 	public void uncaughtException(final Thread p1, final Throwable p2)
 	{
@@ -22,9 +23,9 @@ public class CrashHandler implements UncaughtExceptionHandler
             @Override      
             public void run()
 			{      
-				Intent intent = new Intent(ctx,CrashActivity.class);
+				Intent intent = new Intent(ctx, CrashActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.putExtra("info","Thread:\t"+p1.getName()+"(id:"+p1.getId()+")\nError:\n"+Log.getStackTraceString(p2));
+				intent.putExtra("info", "Thread:\t" + p1.getName() + "(id:" + p1.getId() + ")\nError:\n" + Log.getStackTraceString(p2));
 				ctx.startActivity(intent); 
             }      
         }.start();

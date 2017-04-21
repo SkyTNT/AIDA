@@ -10,8 +10,9 @@ public class App extends Application
 	public void onCreate()
 	{
 		super.onCreate();
-		if(ch==null){
-		ch=new CrashHandler();
+		if (ch == null)
+		{
+			ch = new CrashHandler();
 		}
 		ch.init(this);
 	}

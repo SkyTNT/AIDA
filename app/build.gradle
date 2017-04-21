@@ -17,10 +17,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+	
+	sourceSets{
+        main{
+            jniLibs.srcDirs=['jniLibs']
+        }
+    }
 }
 
-dependencies {
-	compile 'com.android.support:appcompat-v7:22.1.0'
-	compile project(':mdLibrary')
+dependencies
+{
+	compile 'com.android.support:appcompat-v7:25.3.1'
+	compile 'com.android.support:design:23.1.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

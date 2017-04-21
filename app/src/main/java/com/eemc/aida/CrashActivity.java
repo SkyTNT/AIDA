@@ -4,8 +4,9 @@ import android.content.*;
 import android.graphics.*;
 import android.os.*;
 import android.widget.*;
+import android.support.v7.app.*;
 
-public class CrashActivity extends Activity
+public class CrashActivity extends AppCompatActivity
 {
 	LinearLayout mainl;
 	
