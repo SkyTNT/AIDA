@@ -114,13 +114,15 @@ public class AIDAActivity extends AppCompatActivity
 									{
 										setCardView(0);
 										symad.showing.clear();
-										for (int i=0;i < symnum;i++)
-										{
-											if (syms.get(i).demangledname.contains(kw.getText().toString()))
+										
+											for (int i=0;i < symnum;++i)
 											{
-												symad.showing.add(i);
+												if (syms.get(i).demangledname.contains(kw.getText().toString()))
+												{
+													symad.showing.add(i);
+												}
 											}
-										}
+										
 										symad.notifyDataSetChanged();
 									}
 								});
@@ -222,7 +224,6 @@ public class AIDAActivity extends AppCompatActivity
 								public void onClick(DialogInterface p1, int p2)
 								{
 									setCardView(1);
-									// TODO: Implement this method
 								}
 							});
 						d.show();

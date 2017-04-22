@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
 
 		final FloatingActionButton newpj=new FloatingActionButton(this);
 		newpj.setBackgroundResource(android.R.drawable.btn_plus);
-		newpj.setX(width - width / 10 - 15);
+		newpj.setX(width - width / 10 - 85);
 		newpj.setY(height - height / 10 - 65);
 		newpj.setOnClickListener(new OnClickListener(){
 				@Override
@@ -194,6 +194,6 @@ public class MainActivity extends AppCompatActivity
 
 	private void saveAppData()
 	{
-		getSharedPreferences("appdata", Context.MODE_MULTI_PROCESS).edit().putString("projects", projects.toString());
+		getSharedPreferences("appdata", Context.MODE_MULTI_PROCESS).edit().putString("projects", projects.toString()).commit();
 	}
 }
