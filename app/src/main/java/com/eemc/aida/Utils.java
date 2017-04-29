@@ -267,17 +267,17 @@ class FileChooser
 			{
 				if (fl[p1 - 1].isFile())
 				{
-					iv.setImageResource(R.drawable.file);
+					iv.setImageResource(R.drawable.ic_file);
 				}
 				else
 				{
-					iv.setImageResource(R.drawable.folder);
+					iv.setImageResource(R.drawable.ic_folder);
 				}
 				tv.setText(fl[p1 - 1].getName());
 			}
 			else
 			{
-				iv.setImageResource(R.drawable.folder);
+				iv.setImageResource(R.drawable.ic_folder_outline);
 				tv.setText("..");
 			}
 			ml.addView(iv, 60, 60);

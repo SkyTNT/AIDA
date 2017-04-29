@@ -4,6 +4,7 @@ import android.app.*;
 import android.content.*;
 import android.graphics.*;
 import android.os.*;
+import android.support.design.widget.*;
 import android.support.v7.app.*;
 import android.support.v7.widget.*;
 import android.view.*;
@@ -12,8 +13,6 @@ import android.widget.*;
 import java.io.*;
 import org.json.*;
 import android.support.v7.widget.Toolbar;
-import android.widget.ScrollView;
-import android.support.design.widget.*;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -91,8 +90,8 @@ public class MainActivity extends AppCompatActivity
 
 
 		final FloatingActionButton newpj=new FloatingActionButton(this);
-		newpj.setBackgroundResource(android.R.drawable.btn_plus);
-		newpj.setX(width - width / 10 - 85);
+		newpj.setImageResource(R.drawable.ic_plus);
+		newpj.setX(width - width / 10 - 105);
 		newpj.setY(height - height / 10 - 65);
 		newpj.setOnClickListener(new OnClickListener(){
 				@Override
@@ -145,7 +144,6 @@ public class MainActivity extends AppCompatActivity
 	{
 		final AppCompatButton pj=new AppCompatButton(self);
 		pj.setText(path.substring(path.lastIndexOf("/") + 1));
-		pj.setBackgroundColor(Color.WHITE);
 		pj.setTextColor(Color.BLACK);
 		pj.setOnClickListener(new OnClickListener(){
 				@Override
@@ -156,7 +154,7 @@ public class MainActivity extends AppCompatActivity
 					startActivity(intent);
 				}
 			});
-		plist.addView(pj, width, height / 6);
+		plist.addView(pj, width, height / 12);
 	}
 
 	void initFiles() throws Exception

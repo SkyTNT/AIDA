@@ -23,7 +23,7 @@ public class AIDAActivity extends AppCompatActivity
 	RelativeLayout mainlayout;
 	LinearLayout ll;
 	ProgressBar pb;
-	FloatingActionButton showmenu;
+	AppCompatImageButton showmenu;
 	android.support.v7.widget.PopupMenu menu;
 	ListView symlist;
 	EditText symsearch;
@@ -80,11 +80,10 @@ public class AIDAActivity extends AppCompatActivity
 		pb.setBackgroundColor(0xff5555ff);
 		mainlayout.addView(pb, height / 15, height / 15);
 
-		showmenu = new FloatingActionButton(this);
+		showmenu = new AppCompatImageButton(this);
 		showmenu.setX(width - height / 15 - 10);
 		showmenu.setY(height / 20 - height / 30);
-		showmenu.setBackgroundColor(0xff1e88e5);
-		showmenu.setBackgroundResource(R.drawable.menu);
+		showmenu.setImageResource(R.drawable.ic_menu);
 		mainlayout.addView(showmenu, height / 15, height / 15);
 		menu = new android.support.v7.widget.PopupMenu(self, showmenu);
 		showmenu.setOnClickListener(new OnClickListener(){
@@ -322,7 +321,7 @@ public class AIDAActivity extends AppCompatActivity
 				public void onClick(View p1)
 				{
 					int index=0;
-					for (int i=0;i < bfmap.size();i++)
+					for (int i=0;i < bfmap.size();++i)
 					{
 						if (bfmap.get(i) == p1)
 						{index = i;}
@@ -340,7 +339,7 @@ public class AIDAActivity extends AppCompatActivity
 
 	void setCardView(int id)
 	{
-		for (int i=0;i < bfmap.size();i++)
+		for (int i=0;i < bfmap.size();++i)
 		{
 			bfmap.get(i).setBackgroundColor(0xff1e88e5);
 		}
@@ -409,11 +408,11 @@ public class AIDAActivity extends AppCompatActivity
 			ImageView iv=new ImageView(con);
 			if (sym.type == 1)
 			{
-				iv.setImageResource(R.drawable.obj);
+				iv.setImageResource(R.drawable.ic_cube_outline);
 			}
 			if (sym.type == 2)
 			{
-				iv.setImageResource(R.drawable.func);
+				iv.setImageResource(R.drawable.ic_cube);
 			}
 			ml.addView(index, 50, 50);
 			ml.addView(iv, 50, 50);
