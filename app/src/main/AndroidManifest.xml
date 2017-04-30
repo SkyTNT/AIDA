@@ -7,26 +7,34 @@
     <application
 		android:name=".App"
         android:label="@string/app_name"
+		android:icon="@mipmap/aida_icon"
         android:theme="@style/AppTheme" >
         <activity
             android:label="@string/app_name"
             android:name=".MainActivity"
-			android:process=":com.eemc.aida.mainactivity"
-			>
+			android:process=":com.eemc.aida.mainactivity">
+			
             <intent-filter >
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action
+					android:name="android.intent.action.MAIN" />
+                <category
+					android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+			
         </activity>
-		<activity android:name=".AIDAActivity"
+		
+		<activity
+			android:name=".AIDAActivity"
 			android:label="AIDA"
 			android:process=":com.eemc.aida.aidaactivity">
     	</activity>
-		<activity android:name=".CrashActivity"
+		
+		<activity
+			android:name=".CrashActivity"
 			android:label="Crash"
 			android:process=":com.eemc.aida.crashactivity">
     	</activity>
+		
 	</application>
 
 </manifest>
