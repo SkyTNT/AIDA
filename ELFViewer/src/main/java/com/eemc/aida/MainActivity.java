@@ -140,12 +140,14 @@ public class MainActivity extends AppCompatActivity
 		mainlayout.addView(newpj, height / 10, height / 10);
     }
 
-	void addProjectButton(final String path)
+	private void addProjectButton(final String path)
 	{
-		final AppCompatButton pj=new AppCompatButton(self);
-		pj.setText(path.substring(path.lastIndexOf("/") + 1));
-		pj.setTextColor(Color.BLACK);
-		pj.setOnClickListener(new OnClickListener(){
+		CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.main_cardview,null);
+		AppCompatTextView nameView=(AppCompatTextView)cardView.findViewById(R.id.main_cardview_name);
+		nameView.setText(path.substring(path.lastIndexOf("/")+1));
+		AppCompatTextView pathView=(AppCompatTextView)cardView.findViewById(R.id.main_cardview_full_path);
+		pathView.setText(path);
+		cardView.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View p1)
 				{
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity
 					startActivity(intent);
 				}
 			});
-		plist.addView(pj, width, height / 12);
+		plist.addView(cardView);
 	}
 
 	void initFiles() throws Exception
