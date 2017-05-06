@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
 									{
 										if (projectItems.get(i).equals(chose.getPath()))
 										{
-											new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_repeated_file).setMessage(R.string.main_repeated_file_message).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
+											new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_repeated_file).setMessage(R.string.main_repeated_file_message).setIcon(R.drawable.ic_file_multiple).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
 												{
 
 													@Override
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 									}
 									else
 									{
-										new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_is_not_elf_file).setMessage(R.string.main_is_not_elf_file_message).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
+										new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_is_not_elf_file).setMessage(R.string.main_is_not_elf_file_message).setIcon(R.drawable.ic_file_document).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
 											{
 
 												@Override
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity
 						}
 						else
 						{
-							new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_missing_file).setMessage(R.string.main_missing_file_message).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
+							new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_missing_file).setMessage(R.string.main_missing_file_message).setIcon(R.drawable.ic_file_hidden).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
 								{
 
 									@Override
