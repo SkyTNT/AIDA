@@ -167,8 +167,7 @@ class FileChooser
 {
 	String path;
 	Context con;
-	Runnable onfini;
-	public File chose;
+	FileChooserOnFinishEvent onfini;
 	FileChooser(Context con, String path)
 	{
 		this.con = con;
@@ -192,8 +191,7 @@ class FileChooser
 						{
 							if (onfini != null)
 							{
-								chose = fa.fl[p2 - 1];
-								onfini.run();
+								onfini.onFinish(fa.fl[p2 - 1]);
 							}
 						}
 					}
@@ -209,9 +207,15 @@ class FileChooser
 				}
 			}).create().show();
 	}
-	void setOnFiniEve(Runnable r)
+	
+	void setOnFinishEvent(FileChooserOnFinishEvent r)
 	{
 		this.onfini = r;
+	}
+	
+	public interface FileChooserOnFinishEvent
+	{
+		void onFinish(File f);
 	}
 
 

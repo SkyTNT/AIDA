@@ -1,8 +1,6 @@
 package com.eemc.aida;
 
-import android.app.*;
 import android.content.*;
-import android.graphics.*;
 import android.os.*;
 import android.support.design.widget.*;
 import android.support.v7.app.*;
@@ -11,121 +9,61 @@ import android.view.*;
 import android.view.View.*;
 import android.widget.*;
 import java.io.*;
-import org.json.*;
-import android.support.v7.widget.Toolbar;
+import java.util.*;
 
 public class MainActivity extends AppCompatActivity
 {
-	RelativeLayout mainlayout;
-	LinearLayout plist;
-	JSONObject projects;
-	Activity self=this;
-	int width,height,sbheight;
-    /** Called when the activity is first created. */
+	private Vector<String> projectItems;
+	private final static String TAG_PROJECTS = "project_items";
+
     @Override
     public void onCreate(Bundle savedInstanceState)
 	{
         super.onCreate(savedInstanceState);
-		mainlayout = new RelativeLayout(this);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		WindowManager wm =(WindowManager)getSystemService(Context.WINDOW_SERVICE);
-		width = wm.getDefaultDisplay().getWidth();
-		height = wm.getDefaultDisplay().getHeight();
-		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-		if (resourceId > 0)
-		{
-			sbheight = getResources().getDimensionPixelSize(resourceId);
-			height -= sbheight;
-		}
-		setContentView(mainlayout);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-		{
-           	getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-			mainlayout.setFitsSystemWindows(true);
-			ViewGroup contentLayout = (ViewGroup)findViewById(android.R.id.content);
-			View statusBarView = new View(this);
-			contentLayout.addView(statusBarView, width, sbheight);
-			statusBarView.setBackgroundColor(0xff1e88e5);
-        }
+		setContentView(R.layout.main);
 
-		try
-		{
-			initFiles();
-		}
-		catch (Exception e)
-		{
-			try
-			{
-				projects = new JSONObject("{\"num\":0}");
-			}
-			catch (JSONException e2)
-			{}
-			Toast.makeText(this, "" + e, Toast.LENGTH_LONG).show();
-		}
-		Toolbar tb=new Toolbar(this);
-		//tb.setNavigationIcon(R.drawable.ic_launcher);
-		tb.setTitle("AIDA");
-		tb.setSubtitle("工程");
-		tb.setTitleTextColor(Color.WHITE);
-		tb.setBackgroundColor(0xff1e88e5);
-		mainlayout.addView(tb, width, height / 10);
+		loadProjectsData();
+		refreshProjectCardViews();
+		copyBin();
 
-		ScrollView plv=new ScrollView(this);
-		plv.setY(height / 10);
-		mainlayout.addView(plv, width, height - height / 10);
-		plist = new LinearLayout(this);
-		plist.setOrientation(1);
-		plv.addView(plist);
-		try
-		{
-			for (int i=0;i < projects.getInt("num");i++)
-			{
-				addProjectButton(projects.getString(i + ""));
-			}
-		}
-		catch (Exception e)
-		{
+		ActionBar supportActionBar=getSupportActionBar();
+		supportActionBar.setTitle(R.string.app_name);
+		supportActionBar.setSubtitle("工程");
 
-		}
-
-
-		final FloatingActionButton newpj=new FloatingActionButton(this);
-		newpj.setImageResource(R.drawable.ic_plus);
-		newpj.setX(width - width / 10 - 105);
-		newpj.setY(height - height / 10 - 65);
-		newpj.setOnClickListener(new OnClickListener(){
+		FloatingActionButton buttonAddNew=(FloatingActionButton) findViewById(R.id.main_plus_button);
+		buttonAddNew.setImageResource(R.drawable.ic_plus);
+		buttonAddNew.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View p1)
 				{
-					final FileChooser fc=new FileChooser(self, "/sdcard");
-					fc.setOnFiniEve(new Runnable(){
-							@Override
-							public void run()
+					FileChooser fc=new FileChooser(MainActivity.this, Environment.getExternalStorageDirectory().toString());
+					fc.setOnFinishEvent(new FileChooser.FileChooserOnFinishEvent(){
+
+							public void onFinish(File chose)
 							{
 								try
 								{
-									for (int i=0;i < projects.getInt("num");i++)
+									for (int i=0;i < projectItems.size() ;++i)
 									{
-										if (projects.getString(i + "").equals(fc.chose.getPath()))
+										if (projectItems.get(i).equals(chose.getPath()))
 										{
-											android.support.v7.app.AlertDialog d=new android.support.v7.app.AlertDialog.Builder(self).setTitle("错误").setMessage("你已添加过了").create();
+											AlertDialog d=new AlertDialog.Builder(MainActivity.this).setTitle("错误").setMessage("你已添加过了").create();
 											d.show();
 											return;
 										}
 									}
-									FileInputStream fis=new FileInputStream(fc.chose);
+									FileInputStream fis=new FileInputStream(chose);
 									byte b[]=new byte[4];
 									fis.read(b);
 									fis.close();
 									if (b[0] == 0x7f && b[1] == 0x45 && b[2] == 0x4c && b[3] == 0x46)
 									{
-										addProjectButton(fc.chose.getPath());
-										projects.put("num", plist.getChildCount());
-										projects.put("" + (plist.getChildCount() - 1), fc.chose.getPath());
+										projectItems.add(chose.getPath());
+										refreshProjectCardViews();
 									}
 									else
 									{
-										android.support.v7.app.AlertDialog d=new android.support.v7.app.AlertDialog.Builder(self).setTitle("错误").setMessage("该文件不是有效的elf文件").create();
+										android.support.v7.app.AlertDialog d=new android.support.v7.app.AlertDialog.Builder(MainActivity.this).setTitle("错误").setMessage("该文件不是有效的elf文件").create();
 										d.show();
 									}
 								}
@@ -137,37 +75,29 @@ public class MainActivity extends AppCompatActivity
 					fc.start();
 				}
 			});
-		mainlayout.addView(newpj, height / 10, height / 10);
     }
 
-	private void addProjectButton(final String path)
+	private void refreshProjectCardViews()
 	{
-		CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.main_cardview,null);
-		AppCompatTextView nameView=(AppCompatTextView)cardView.findViewById(R.id.main_cardview_name);
-		nameView.setText(path.substring(path.lastIndexOf("/")+1));
-		AppCompatTextView pathView=(AppCompatTextView)cardView.findViewById(R.id.main_cardview_full_path);
-		pathView.setText(path);
-		cardView.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View p1)
-				{
-					Intent intent=new Intent(self, AIDAActivity.class);
-					intent.putExtra("path", path);
-					startActivity(intent);
-				}
-			});
-		plist.addView(cardView);
+		saveProjectsData();
+		ListView listView = (ListView) findViewById(R.id.main_listview);
+		listView.setAdapter(new ProjectCardViewAdapter());
 	}
 
-	void initFiles() throws Exception
+	private void loadProjectsData()
 	{
-		String str=getSharedPreferences("appdata", Context.MODE_MULTI_PROCESS).getString("projects", "{\"num\":0}");
-		projects = new JSONObject(str);
-
-		copyBin();
+		projectItems = new Vector<String>();
+		SharedPreferences preferences=getSharedPreferences(TAG_PROJECTS, Context.MODE_MULTI_PROCESS);
+		int num = preferences.getInt("projects_num", 0);
+		for (int index=0;index < num;++index)
+		{
+			String projectItem = preferences.getString(new Integer(index).toString(), null);
+			if (projectItem != null)
+				projectItems.add(projectItem);
+		}
 	}
 
-	void copyBin()
+	private void copyBin()
 	{
 		try
 		{
@@ -182,18 +112,95 @@ public class MainActivity extends AppCompatActivity
 		}
 		catch (Exception e)
 		{
-			Toast.makeText(this, "" + e, Toast.LENGTH_LONG).show();
 		}
 	}
-	@Override
-	protected void onDestroy()
+
+	private void saveProjectsData()
 	{
-		super.onDestroy();
-		saveAppData();
+		SharedPreferences.Editor preferencesEdtitor=getSharedPreferences(TAG_PROJECTS, Context.MODE_MULTI_PROCESS).edit();
+		preferencesEdtitor.putInt("projects_num", projectItems.size());
+		for (int index=0;index < projectItems.size();++index)
+		{
+			preferencesEdtitor.putString(new Integer(index).toString(), projectItems.get(index));
+		}
+		preferencesEdtitor.commit();
 	}
 
-	private void saveAppData()
+	private class ProjectCardViewAdapter extends BaseAdapter
 	{
-		getSharedPreferences("appdata", Context.MODE_MULTI_PROCESS).edit().putString("projects", projects.toString()).commit();
+		@Override
+		public int getCount()
+		{
+			return projectItems.size();
+		}
+
+		@Override
+		public Object getItem(int p1)
+		{
+			return p1;
+		}
+
+		@Override
+		public long getItemId(int p1)
+		{
+			return p1;
+		}
+
+		@Override
+		public View getView(int p1, View p2, ViewGroup p3)
+		{
+			final String path = projectItems.get(p1);
+			CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.main_cardview, null);
+			AppCompatTextView nameView=(AppCompatTextView)cardView.findViewById(R.id.main_cardview_name);
+			nameView.setText(path.substring(path.lastIndexOf("/") + 1));
+			AppCompatTextView pathView=(AppCompatTextView)cardView.findViewById(R.id.main_cardview_full_path);
+			pathView.setText(path);
+			cardView.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View p1)
+					{
+						Intent intent=new Intent(MainActivity.this, ELFViewerActivity.class);
+						intent.putExtra("path", path);
+						startActivity(intent);
+					}
+
+				});
+			cardView.setOnLongClickListener(new View.OnLongClickListener()
+				{
+
+					@Override
+					public boolean onLongClick(View p1)
+					{
+						new AlertDialog.Builder(MainActivity.this).setIcon(R.drawable.ic_delete).setTitle(R.string.main_delete_item).setMessage(R.string.main_delete_item_message).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+							{
+
+								@Override
+								public void onClick(DialogInterface p1, int p2)
+								{
+									projectItems.remove(path);
+									refreshProjectCardViews();
+									p1.dismiss();
+								}
+
+
+							}).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
+							{
+
+								@Override
+								public void onClick(DialogInterface p1, int p2)
+								{
+									p1.dismiss();
+								}
+
+
+							}).show();
+						return false;
+					}
+
+
+				});
+			return cardView;
+		}
 	}
 }

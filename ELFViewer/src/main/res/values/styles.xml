@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
+		<item name="android:statusBarColor">#ff1e88e5</item>
+		<item name="colorPrimary">#3B98EF</item>  
+       	<item name="colorPrimaryDark">#ff1e88e5</item>  
+     	<item name="colorAccent">#3B98EF</item>
 	</style>
 </resources>

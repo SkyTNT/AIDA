@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ELF Viewer</string>
+	
+	<string name="main_delete_item">Delete ELF File</string>
+	<string name="main_delete_item_message">Are you sure to remove this ELF file?</string>
 </resources>

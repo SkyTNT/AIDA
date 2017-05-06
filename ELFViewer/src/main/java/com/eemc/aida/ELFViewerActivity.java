@@ -17,7 +17,7 @@ import java.util.*;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 
-public class AIDAActivity extends AppCompatActivity
+public class ELFViewerActivity extends AppCompatActivity
 {
 	String path;
 	RelativeLayout mainlayout;

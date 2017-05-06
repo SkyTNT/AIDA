@@ -3,7 +3,7 @@ import android.app.*;
 import android.util.*;
 import java.util.*;
 
-public class App extends Application
+public class ELFViewerApplication extends Application
 {
 	CrashHandler ch;
 	@Override
