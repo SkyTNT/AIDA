@@ -1,6 +1,6 @@
 package com.eemc.aida.elf;
 
-public class relocation
+public class Relocation
 {
 	public int offset;
 	public int info;

@@ -1,6 +1,6 @@
 package com.eemc.aida.elf;
 
-public class header
+public class Header
 {
 	public byte[] ident = new byte[16];
 	public int type ;

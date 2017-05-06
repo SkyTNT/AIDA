@@ -5,19 +5,20 @@ import java.util.*;
 
 public class ELFViewerApplication extends Application
 {
-	CrashHandler ch;
+	private CrashHandler crashHandler;
 	@Override
 	public void onCreate()
 	{
 		super.onCreate();
-		if (ch == null)
+		if (crashHandler == null)
 		{
-			ch = new CrashHandler();
+			crashHandler = new CrashHandler();
 		}
-		ch.init(this);
+		crashHandler.init(this,Thread.getDefaultUncaughtExceptionHandler());
 	}
+	
 	static
 	{
-        System.loadLibrary("aida");
+        System.loadLibrary("elf-viewer");
     }
 }

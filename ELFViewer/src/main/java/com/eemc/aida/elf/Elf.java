@@ -3,9 +3,9 @@ import java.util.*;
 
 public class Elf
 {
-	public header hdr=new header();
-	public Vector<segment> segments = new Vector<segment>();
-	public Vector<section> sections = new Vector<section>();
+	public Header hdr=new Header();
+	public Vector<Segment> segments = new Vector<Segment>();
+	public Vector<Section> sections = new Vector<Section>();
 	
 	public Elf() {
 	}

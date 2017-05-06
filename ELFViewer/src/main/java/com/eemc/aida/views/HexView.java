@@ -9,7 +9,7 @@ import com.eemc.aida.*;
 
 public class HexView extends RelativeLayout
 {
-	dump dumper;
+	Dump dumper;
 	int w,h;
 	int line;
 	View bar;
@@ -19,7 +19,7 @@ public class HexView extends RelativeLayout
 	public TextView[] addrs=new TextView[20];
 	public TextView[] tvs=new TextView[160];
 
-	public HexView(Context con, int width, int height, dump d)
+	public HexView(Context con, int width, int height, Dump d)
 	{
 		super(con);
 		dumper = d;
@@ -68,7 +68,7 @@ public class HexView extends RelativeLayout
 
 			int addr=(i + line) * 8;
 			String sn="";
-			for (section sec:dumper.elf.sections)
+			for (Section sec:dumper.elf.sections)
 			{
 				if (sec.offset <= addr && sec.offset + sec.size > addr)
 				{

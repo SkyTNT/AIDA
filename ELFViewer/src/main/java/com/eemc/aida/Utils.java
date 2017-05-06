@@ -59,38 +59,6 @@ public final class Utils
 		return result;
 	}
 
-	public static boolean saveFile(String fileName, byte[] arys)
-	{
-		File file = new File(fileName);
-		FileOutputStream fos = null;
-		try
-		{
-			fos = new FileOutputStream(file);
-			fos.write(arys);
-			fos.flush();
-			return true;
-		}
-		catch (Exception e)
-		{
-			System.out.println("save file error:" + e.toString());
-		}
-		finally
-		{
-			if (fos != null)
-			{
-				try
-				{
-					fos.close();
-				}
-				catch (Exception e)
-				{
-					System.out.println("close file error:" + e.toString());
-				}
-			}
-		}
-		return false;
-	}
-
 	public static byte[] readFile(String fileName)
 	{
 		try

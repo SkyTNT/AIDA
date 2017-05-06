@@ -1,6 +1,6 @@
 package com.eemc.aida.elf;
 
-public class section
+public class Section
 {
 	public String name;
 	public int type;

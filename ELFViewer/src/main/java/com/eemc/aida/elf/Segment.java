@@ -1,7 +1,7 @@
 package com.eemc.aida.elf;
 import java.util.*;
 
-public class segment
+public class Segment
 {
 	public int type;
 	public int offset;
@@ -11,5 +11,5 @@ public class segment
 	public int memsz;
 	public int flags;
 	public int align;
-	public Vector<section>sections=new Vector<section>();
+	public Vector<Section>sections=new Vector<Section>();
 }

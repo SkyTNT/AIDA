@@ -7,10 +7,10 @@ import android.util.*;
 
 public class CrashHandler implements UncaughtExceptionHandler
 {
-
-	Context ctx;
-
-	public void init(Context ctx)
+	private Context ctx;
+	private UncaughtExceptionHandler mDefaultHandler;
+	
+	public void init(Context ctx,UncaughtExceptionHandler defaultHandlet)
 	{
 		this.ctx = ctx;
 		Thread.setDefaultUncaughtExceptionHandler(this);
@@ -27,6 +27,7 @@ public class CrashHandler implements UncaughtExceptionHandler
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.putExtra("info", "Thread:\t" + p1.getName() + "(id:" + p1.getId() + ")\nError:\n" + Log.getStackTraceString(p2));
 				ctx.startActivity(intent); 
+				mDefaultHandler.uncaughtException(p1,p2);
             }      
         }.start();
 	}
