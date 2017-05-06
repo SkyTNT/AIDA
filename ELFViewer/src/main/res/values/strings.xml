@@ -4,4 +4,12 @@
 	
 	<string name="main_delete_item">Delete ELF File</string>
 	<string name="main_delete_item_message">Are you sure to remove this ELF file?</string>
+	<string name="main_missing_file">Missing File</string>
+	<string name="main_missing_file_message">This ELF Project points to a missing file.Please make sure that the ELF file is exited.</string>
+	<string name="main_repeated_file">Repeated Project</string>
+	<string name="main_repeated_file_message">This ELF project is already created.Please choose another one.</string>
+	<string name="main_is_not_elf_file">Unsupported ELF File</string>
+	<string name="main_is_not_elf_file_message">It isn\'t a kind of ELF file.Please choose another one.</string>
+	<string name="main_subtitle_projects">Projects</string>
+	<string name="main_delete_this_project">Delete This Project</string>
 </resources>

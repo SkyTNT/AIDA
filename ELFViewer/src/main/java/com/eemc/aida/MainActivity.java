@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity
 
 		ActionBar supportActionBar=getSupportActionBar();
 		supportActionBar.setTitle(R.string.app_name);
-		supportActionBar.setSubtitle("工程");
+		supportActionBar.setSubtitle(R.string.main_subtitle_projects);
 
 		FloatingActionButton buttonAddNew=(FloatingActionButton) findViewById(R.id.main_plus_button);
 		buttonAddNew.setImageResource(R.drawable.ic_plus);
@@ -47,8 +47,17 @@ public class MainActivity extends AppCompatActivity
 									{
 										if (projectItems.get(i).equals(chose.getPath()))
 										{
-											AlertDialog d=new AlertDialog.Builder(MainActivity.this).setTitle("错误").setMessage("你已添加过了").create();
-											d.show();
+											new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_repeated_file).setMessage(R.string.main_repeated_file_message).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
+												{
+
+													@Override
+													public void onClick(DialogInterface p1, int p2)
+													{
+														p1.dismiss();
+													}
+													
+												
+											}).show();
 											return;
 										}
 									}
@@ -63,8 +72,17 @@ public class MainActivity extends AppCompatActivity
 									}
 									else
 									{
-										android.support.v7.app.AlertDialog d=new android.support.v7.app.AlertDialog.Builder(MainActivity.this).setTitle("错误").setMessage("该文件不是有效的elf文件").create();
-										d.show();
+										new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_is_not_elf_file).setMessage(R.string.main_is_not_elf_file_message).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
+											{
+
+												@Override
+												public void onClick(DialogInterface p1, int p2)
+												{
+													p1.dismiss();
+												}
+												
+											
+										}).show();
 									}
 								}
 								catch (Exception e)
@@ -160,9 +178,39 @@ public class MainActivity extends AppCompatActivity
 					@Override
 					public void onClick(View p1)
 					{
-						Intent intent=new Intent(MainActivity.this, ELFViewerActivity.class);
-						intent.putExtra("path", path);
-						startActivity(intent);
+						File file = new File(path);
+						if(file.exists())
+						{
+							Intent intent=new Intent(MainActivity.this, ELFViewerActivity.class);
+							intent.putExtra("path", path);
+							startActivity(intent);
+						}
+						else
+						{
+							new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_missing_file).setMessage(R.string.main_missing_file_message).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
+								{
+
+									@Override
+									public void onClick(DialogInterface p1, int p2)
+									{
+										p1.dismiss();
+									}
+									
+								
+							}).setNegativeButton(R.string.main_delete_this_project,new DialogInterface.OnClickListener()
+								{
+
+									@Override
+									public void onClick(DialogInterface p1, int p2)
+									{
+										projectItems.remove(path);
+										refreshProjectCardViews();
+										p1.dismiss();
+									}
+									
+								
+							}).show();
+						}
 					}
 
 				});
