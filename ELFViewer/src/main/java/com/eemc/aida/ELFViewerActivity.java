@@ -56,7 +56,7 @@ public class ELFViewerActivity extends AppCompatActivity
 		
 		getSupportActionBar().setTitle(R.string.app_name);
 		getSupportActionBar().setSubtitle(path.substring(path.lastIndexOf("/") + 1));
-
+		
 		pb = new ProgressBar(this);
 		pb.setX(width - (2 * height) / 15 - 20);
 		pb.setY(height / 20 - height / 30);

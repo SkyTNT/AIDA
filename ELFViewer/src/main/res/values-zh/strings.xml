@@ -12,4 +12,8 @@
 	<string name="main_is_not_elf_file_message">这不是一个我们支持的ELF文件类型。请选择另一个文件。</string>
 	<string name="main_subtitle_projects">工程</string>
 	<string name="main_delete_this_project">删除这项工程</string>
+	
+	<string name="file_selector_back_to_external_storage">外部存储路径</string>
+	<string name="file_chooser_title">选择文件</string>
+	<string name="elf_viewer_title">ELF查看器</string>
 </resources>

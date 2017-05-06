@@ -11,14 +11,34 @@
 		android:layout_height="fill_parent"
 		android:id="@+id/main_listview"/>
 
-	<android.support.design.widget.FloatingActionButton
+	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:id="@+id/main_plus_button"
 		android:layout_alignParentRight="true"
 		android:layout_alignParentBottom="true"
 		android:layout_marginBottom="25dp"
-		android:layout_marginRight="25dp"/>
+		android:layout_marginRight="25dp"
+		android:orientation="vertical">
+
+		<android.support.design.widget.FloatingActionButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/main_more_button"
+			android:layout_marginTop="10dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:layout_marginBottom="10dp"/>
+		
+		<android.support.design.widget.FloatingActionButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/main_plus_button"
+			android:layout_marginBottom="15dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:layout_marginTop="10dp"/>
+
+	</LinearLayout>
 
 </RelativeLayout>
 

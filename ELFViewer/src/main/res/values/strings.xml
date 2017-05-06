@@ -12,4 +12,13 @@
 	<string name="main_is_not_elf_file_message">It isn\'t a kind of ELF file.Please choose another one.</string>
 	<string name="main_subtitle_projects">Projects</string>
 	<string name="main_delete_this_project">Delete This Project</string>
+	<string name="main_gnu_tools">GNU Tools</string>
+	<string name="main_gun_tool_ar">AR</string>
+	<string name="main_gun_tool_nm">NM</string>
+	<string name="main_gun_tool_objdump">OBJDUMP</string>
+	<string name="main_gun_tool_objcopy">OBJCOPY</string>
+	
+	<string name="file_selector_back_to_external_storage">External Storage Dir</string>
+	<string name="file_chooser_title">Choose File</string>
+	<string name="elf_viewer_title">ELF Viewer</string>
 </resources>

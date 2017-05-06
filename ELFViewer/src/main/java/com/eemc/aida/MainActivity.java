@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity
 {
 	private Vector<String> projectItems;
 	private final static String TAG_PROJECTS = "project_items";
-
+	private final static int REQUEST_CODE_CHOOSE_FILE = 0;
     @Override
     public void onCreate(Bundle savedInstanceState)
 	{
@@ -36,64 +36,79 @@ public class MainActivity extends AppCompatActivity
 				@Override
 				public void onClick(View p1)
 				{
-					FileChooser fc=new FileChooser(MainActivity.this, Environment.getExternalStorageDirectory().toString());
-					fc.setOnFinishEvent(new FileChooser.FileChooserOnFinishEvent(){
-
-							public void onFinish(File chose)
-							{
-								try
-								{
-									for (int i=0;i < projectItems.size() ;++i)
-									{
-										if (projectItems.get(i).equals(chose.getPath()))
-										{
-											new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_repeated_file).setMessage(R.string.main_repeated_file_message).setIcon(R.drawable.ic_file_multiple).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
-												{
-
-													@Override
-													public void onClick(DialogInterface p1, int p2)
-													{
-														p1.dismiss();
-													}
-													
-												
-											}).show();
-											return;
-										}
-									}
-									FileInputStream fis=new FileInputStream(chose);
-									byte b[]=new byte[4];
-									fis.read(b);
-									fis.close();
-									if (b[0] == 0x7f && b[1] == 0x45 && b[2] == 0x4c && b[3] == 0x46)
-									{
-										projectItems.add(chose.getPath());
-										refreshProjectCardViews();
-									}
-									else
-									{
-										new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_is_not_elf_file).setMessage(R.string.main_is_not_elf_file_message).setIcon(R.drawable.ic_file_document).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
-											{
-
-												@Override
-												public void onClick(DialogInterface p1, int p2)
-												{
-													p1.dismiss();
-												}
-												
-											
-										}).show();
-									}
-								}
-								catch (Exception e)
-								{
-								}
-							}
-						});
-					fc.start();
+					startActivityForResult(new Intent(MainActivity.this, FileChooserActivity.class), REQUEST_CODE_CHOOSE_FILE);
+				}
+			});
+			
+		FloatingActionButton buttonGNUTools=(FloatingActionButton) findViewById(R.id.main_more_button);
+		buttonGNUTools.setImageResource(R.drawable.ic_puzzle);
+		buttonGNUTools.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View p1)
+				{
+					
 				}
 			});
     }
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == REQUEST_CODE_CHOOSE_FILE && resultCode == FileChooserActivity.RESULT_OK)
+		{
+			String path = data.getExtras().getString(FileChooserActivity.TAG_FILE_PATH);
+
+			for (int i=0;i < projectItems.size() ;++i)
+			{
+				if (projectItems.get(i).equals(path))
+				{
+					new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_repeated_file).setMessage(R.string.main_repeated_file_message).setIcon(R.drawable.ic_file_multiple).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+						{
+
+							@Override
+							public void onClick(DialogInterface p1, int p2)
+							{
+								p1.dismiss();
+							}
+
+
+						}).show();
+					return;
+				}
+			}
+			byte byteFileHeader[]=new byte[4];
+			try
+			{
+				FileInputStream fileInputStream=new FileInputStream(path);
+				fileInputStream.read(byteFileHeader);
+				fileInputStream.close();
+			}
+			catch (IOException ioException)
+			{}
+
+			if (byteFileHeader[0] == 0x7f && byteFileHeader[1] == 0x45 && byteFileHeader[2] == 0x4c && byteFileHeader[3] == 0x46)
+			{
+				projectItems.add(path);
+				refreshProjectCardViews();
+			}
+			else
+			{
+				new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_is_not_elf_file).setMessage(R.string.main_is_not_elf_file_message).setIcon(R.drawable.ic_file_document).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+					{
+
+						@Override
+						public void onClick(DialogInterface p1, int p2)
+						{
+							p1.dismiss();
+						}
+
+
+					}).show();
+			}
+		}
+	}
 
 	private void refreshProjectCardViews()
 	{
@@ -179,7 +194,7 @@ public class MainActivity extends AppCompatActivity
 					public void onClick(View p1)
 					{
 						File file = new File(path);
-						if(file.exists())
+						if (file.exists())
 						{
 							Intent intent=new Intent(MainActivity.this, ELFViewerActivity.class);
 							intent.putExtra("path", path);
@@ -187,7 +202,7 @@ public class MainActivity extends AppCompatActivity
 						}
 						else
 						{
-							new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_missing_file).setMessage(R.string.main_missing_file_message).setIcon(R.drawable.ic_file_hidden).setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener()
+							new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_missing_file).setMessage(R.string.main_missing_file_message).setIcon(R.drawable.ic_file_hidden).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 								{
 
 									@Override
@@ -195,9 +210,9 @@ public class MainActivity extends AppCompatActivity
 									{
 										p1.dismiss();
 									}
-									
-								
-							}).setNegativeButton(R.string.main_delete_this_project,new DialogInterface.OnClickListener()
+
+
+								}).setNegativeButton(R.string.main_delete_this_project, new DialogInterface.OnClickListener()
 								{
 
 									@Override
@@ -207,9 +222,9 @@ public class MainActivity extends AppCompatActivity
 										refreshProjectCardViews();
 										p1.dismiss();
 									}
-									
-								
-							}).show();
+
+
+								}).show();
 						}
 					}
 
