@@ -13,7 +13,9 @@
 	<string name="main_subtitle_projects">工程</string>
 	<string name="main_delete_this_project">删除这项工程</string>
 	
+	<string name="loading_title">加载符号表</string>
 	<string name="file_selector_back_to_external_storage">外部存储路径</string>
 	<string name="file_chooser_title">选择文件</string>
 	<string name="elf_viewer_title">ELF查看器</string>
+	<string name="executable_runtime_title">终端控制台</string>
 </resources>

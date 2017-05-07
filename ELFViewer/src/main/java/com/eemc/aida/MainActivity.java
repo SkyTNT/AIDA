@@ -40,13 +40,44 @@ public class MainActivity extends AppCompatActivity
 				}
 			});
 			
-		FloatingActionButton buttonGNUTools=(FloatingActionButton) findViewById(R.id.main_more_button);
-		buttonGNUTools.setImageResource(R.drawable.ic_puzzle);
-		buttonGNUTools.setOnClickListener(new OnClickListener(){
+		FloatingActionButton buttonGCCTools=(FloatingActionButton) findViewById(R.id.main_more_button);
+		buttonGCCTools.setImageResource(R.drawable.ic_puzzle);
+		buttonGCCTools.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View p1)
 				{
-					
+					new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_gcc_tools).setPositiveButton(android.R.string.cancel,new DialogInterface.OnClickListener()
+						{
+
+							@Override
+							public void onClick(DialogInterface p1, int p2)
+							{
+								p1.dismiss();
+							}
+							
+						
+					}).setItems(R.array.main_gcc_tool_items,new DialogInterface.OnClickListener()
+						{
+
+							@Override
+							public void onClick(DialogInterface p1, int p2)
+							{
+								switch(p2)
+								{
+								case 0:
+									RuntimeActivity.startThisActivity(MainActivity.this,"");
+									break;
+								case 1:
+									break;
+								case 2:
+									break;
+								case 3:
+									break;
+								}
+							}
+							
+						
+					}).show();
 				}
 			});
     }
@@ -196,9 +227,7 @@ public class MainActivity extends AppCompatActivity
 						File file = new File(path);
 						if (file.exists())
 						{
-							Intent intent=new Intent(MainActivity.this, ELFViewerActivity.class);
-							intent.putExtra("path", path);
-							startActivity(intent);
+							LoadingActivity.startThisActivity(MainActivity.this,path);
 						}
 						else
 						{

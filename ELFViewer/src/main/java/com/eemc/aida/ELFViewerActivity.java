@@ -10,39 +10,41 @@ import android.text.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
+import com.eemc.aida.elf.Tables;
 import com.eemc.aida.elf.*;
 import com.eemc.aida.views.*;
 import java.util.*;
 import android.support.v7.widget.Toolbar;
+import java.io.*;
 
 public class ELFViewerActivity extends AppCompatActivity
 {
 	private String path;
 	private RelativeLayout mainlayout;
 	private LinearLayout ll;
-	private ProgressBar pb;
 	private AppCompatImageButton showmenu;
-	private android.support.v7.widget.PopupMenu menu;
 	private ListView symlist;
 	private EditText symsearch;
 	private HexView vhex;
 	private SymbolAdapter symad;
 	private int width,height,sbheight;
 	private Dump dumper;
-	private Vector<Symbol>syms=new Vector<Symbol>();
-	private int symnum;
 	private HashMap<Integer,RelativeLayout>vmap=new HashMap<Integer,RelativeLayout>();
 	private HashMap<Integer,FloatingActionButton>bfmap=new HashMap<Integer,FloatingActionButton>();
-	private ELFViewerHandler mhandler=new ELFViewerHandler();
-
+	
+	public static final String TAG_FILE_PATH = "file_path";
+	public static Vector<Symbol> loadedSymbols=new Vector<Symbol>();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		path = this.getIntent().getExtras().getString("path");
-
-		setTitle(path.substring(path.lastIndexOf("/") + 1));
+		setContentView(R.layout.viewer);
+		
+		path = this.getIntent().getExtras().getString(TAG_FILE_PATH);
 		dumper = new Dump(path);
+		setTitle(path.substring(path.lastIndexOf("/") + 1));
+		
 		mainlayout = new RelativeLayout(this);
 		width = getWindowManager().getDefaultDisplay().getWidth();
 		height = getWindowManager().getDefaultDisplay().getHeight();
@@ -52,63 +54,25 @@ public class ELFViewerActivity extends AppCompatActivity
 			sbheight = getResources().getDimensionPixelSize(resourceId);
 			height -= sbheight;
 		}
-		setContentView(mainlayout);
+		
 		
 		getSupportActionBar().setTitle(R.string.app_name);
 		getSupportActionBar().setSubtitle(path.substring(path.lastIndexOf("/") + 1));
-		
-		pb = new ProgressBar(this);
-		pb.setX(width - (2 * height) / 15 - 20);
-		pb.setY(height / 20 - height / 30);
-		pb.setBackgroundColor(0xff5555ff);
-		mainlayout.addView(pb, height / 15, height / 15);
-
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		showmenu = new AppCompatImageButton(this);
 		showmenu.setX(width - height / 15 - 10);
 		showmenu.setY(height / 20 - height / 30);
 		showmenu.setImageResource(R.drawable.ic_menu);
 		mainlayout.addView(showmenu, height / 15, height / 15);
-		menu = new android.support.v7.widget.PopupMenu(ELFViewerActivity.this, showmenu);
-		showmenu.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View p1)
-				{
-					Menu m=menu.getMenu();
-					m.clear();
-					m.add(0, 0, 0, "搜索");
-					m.add(0, 1, 0, "跳转");
-					menu.show();
-				}
-			});
-		menu.setOnMenuItemClickListener(new android.support.v7.widget.PopupMenu.OnMenuItemClickListener(){
+		
+		/*menu.setOnMenuItemClickListener(new android.support.v7.widget.PopupMenu.OnMenuItemClickListener(){
 				@Override
 				public boolean onMenuItemClick(MenuItem p1)
 				{
 					switch (p1.getItemId())
 					{
 						case 0:
-							AlertDialog.Builder d=new AlertDialog.Builder(ELFViewerActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-							final EditText kw=new EditText(ELFViewerActivity.this);
-							kw.setHint("关键字");
-							d.setTitle("搜索").setView(kw).setCancelable(false).setNegativeButton("确定", new DialogInterface.OnClickListener(){
-									@Override
-									public void onClick(DialogInterface p1, int p2)
-									{
-										setCardView(0);
-										symad.showing.clear();
-
-										for (int i=0;i < symnum;++i)
-										{
-											if (syms.get(i).demangledName.contains(kw.getText().toString()))
-											{
-												symad.showing.add(i);
-											}
-										}
-
-										symad.notifyDataSetChanged();
-									}
-								});
-							d.create().show();
+							
 							break;
 						case 1:
 							AlertDialog.Builder d1=new AlertDialog.Builder(ELFViewerActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
@@ -160,7 +124,7 @@ public class ELFViewerActivity extends AppCompatActivity
 					return false;
 				}
 			});
-
+*/
 		HorizontalScrollView hsv=new HorizontalScrollView(this);
 		hsv.setY(height / 10);
 		hsv.setBackgroundColor(0xff1e88e5);
@@ -168,10 +132,48 @@ public class ELFViewerActivity extends AppCompatActivity
 		hsv.addView(ll);
 		mainlayout.addView(hsv, width, height / 15);
 		initCards();
-		initSyms();
 	}
 
-	void initCards()
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.actionbar_viewer, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		if(item.getItemId() == android.R.id.home)
+			finish();
+		else if(item.getItemId() == R.id.action_find)
+		{
+			final EditText editText=new EditText(ELFViewerActivity.this);
+			new AlertDialog.Builder(ELFViewerActivity.this).
+			setTitle(R.string.search_menu_title).setView(editText).setCancelable(false).setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface p1, int p2)
+					{
+						setCardView(0);
+						symad.showing.clear();
+
+						for (int i=0;i < loadedSymbols.size() ;++i)
+						{
+							if (loadedSymbols.get(i).demangledName.contains(editText.getText().toString()))
+							{
+								symad.showing.add(i);
+							}
+						}
+
+						symad.notifyDataSetChanged();
+					}
+				}).show();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void initCards()
 	{
 		RelativeLayout rsyms=new RelativeLayout(this);
 		symlist = new ListView(this);
@@ -180,7 +182,7 @@ public class ELFViewerActivity extends AppCompatActivity
 				@Override
 				public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4)
 				{
-					Symbol sym=syms.get(symad.showing.get(p3));
+					Symbol sym=loadedSymbols.get(symad.showing.get(p3));
 					if (sym.type == 2)
 					{
 						int addr=sym.value;
@@ -216,7 +218,7 @@ public class ELFViewerActivity extends AppCompatActivity
 		symlist.setAdapter(symad);
 		rsyms.addView(symlist, width, height - height / 10 - height / 15);
 		symsearch = new EditText(this);
-		symsearch.setHint("搜索");
+		symsearch.setHint(R.string.search_menu_title);
 		symsearch.setY(-height / 15);
 		symsearch.addTextChangedListener(new TextWatcher(){
 
@@ -230,9 +232,9 @@ public class ELFViewerActivity extends AppCompatActivity
 				public void afterTextChanged(Editable p1)
 				{
 					symad.showing.clear();
-					for (int i=0;i < symnum;i++)
+					for (int i=0;i < loadedSymbols.size();++i)
 					{
-						if (syms.get(i).demangledName.contains(p1.toString()))
+						if (loadedSymbols.get(i).demangledName.contains(p1.toString()))
 						{
 							symad.showing.add(i);
 						}
@@ -255,47 +257,12 @@ public class ELFViewerActivity extends AppCompatActivity
 		rAIDA.addView(vAIDA, width, height - height / 10 - height / 15);
 		addCardView(2, "AIDA视图", rAIDA);
 
+	
 
 		setCardView(0);
 	}
 
-	void initSyms()
-	{
-		for (Section sec:dumper.elf.sections)
-		{
-			if (sec.type == 2 || sec.type == 11)
-			{
-				symnum += dumper.getSymNum(sec);
-			}
-		}
-
-		Thread loadsyms=new Thread(new Runnable(){
-				@Override
-				public void run()
-				{
-					for (Section sec:dumper.elf.sections)
-					{
-						if (sec.type == 2 || sec.type == 11)
-						{
-							for (int i=0;i < dumper.getSymNum(sec);++i)
-							{
-								Message msg=new Message();
-								msg.what = 0;
-								msg.arg1 = i;
-								msg.obj = dumper.getSym(sec, i);
-								mhandler.sendMessage(msg);
-							}
-						}
-					}
-					Message msg=new Message();
-					msg.what = 1;
-					mhandler.sendMessage(msg);
-				}
-			});
-		loadsyms.start();
-	}
-
-	void addCardView(int id, String name, RelativeLayout v)
+	private void addCardView(int id, String name, RelativeLayout v)
 	{
 		FloatingActionButton bf=new FloatingActionButton(this);
 		bf.setBackgroundColor(0xff1e88e5);
@@ -320,7 +287,7 @@ public class ELFViewerActivity extends AppCompatActivity
 		bfmap.put(id, bf);
 	}
 
-	void setCardView(int id)
+	private void setCardView(int id)
 	{
 		for (int i=0;i < bfmap.size();++i)
 		{
@@ -334,7 +301,7 @@ public class ELFViewerActivity extends AppCompatActivity
 		vmap.get(id).setX(0);
 	}
 
-	class SymbolAdapter extends BaseAdapter
+	private class SymbolAdapter extends BaseAdapter
 	{
 		Context con;
 		Vector<Integer>showing;
@@ -354,7 +321,7 @@ public class ELFViewerActivity extends AppCompatActivity
 		@Override
 		public Object getItem(int p1)
 		{
-			return syms.get(showing.get(p1));
+			return loadedSymbols.get(showing.get(p1));
 		}
 
 		@Override
@@ -363,17 +330,11 @@ public class ELFViewerActivity extends AppCompatActivity
 			return showing.get(p1);
 		}
 
-		void addSym(Symbol sym)
-		{
-			syms.add(sym);
-			symlist.invalidate();
-		}
-
 		@Override
 		public View getView(int p1, View p2, ViewGroup p3)
 		{
 			LinearLayout ml=new LinearLayout(con);
-			Symbol sym=syms.get(showing.get(p1));
+			Symbol sym=loadedSymbols.get(showing.get(p1));
 			LinearLayout ml2=new LinearLayout(con);
 			ml2.setOrientation(1);
 			TextView index=new TextView(con);
@@ -405,38 +366,19 @@ public class ELFViewerActivity extends AppCompatActivity
 			return ml;
 		}
 	}
-
-	class ELFViewerHandler extends Handler
+	
+	
+	public static void startThisActivity(Context context, String path)
 	{
-		@Override
-		public void handleMessage(Message msg)
-		{
-			int what=msg.what;
-			if (what == 0)
-			{
-				symad.addSym((Symbol)(msg.obj));
-				symad.showing.add(msg.arg1);
-				//bfmap.get(0).setText("符号表\n("+msg.arg1+"/"+symnum+")");
-			}
-			if (what == 1)
-			{
-				pb.setY(-height / 15);
-				//bfmap.get(0).setText("符号表");
-				symlist.getLayoutParams().height = height - height / 10 - (height * 2) / 15;
-				symlist.setY(height / 15);
-				symsearch.setY(0);
-				new AlertDialog.Builder(ELFViewerActivity.this).setTitle("Symbol加载完成").setPositiveButton("好的", new DialogInterface.OnClickListener()
-					{
-
-						@Override
-						public void onClick(DialogInterface p1, int p2)
-						{
-							p1.dismiss();
-						}
-
-
-					}).show();
-			}
-		}
+		Intent intent = new Intent(context, ELFViewerActivity.class);
+		Bundle extras = new Bundle();
+		extras.putString(TAG_FILE_PATH, path);
+		intent.putExtras(extras);
+		context.startActivity(intent);
+	}
+	
+	public static void startThisActivity(Context context, File path)
+	{
+		startThisActivity(context, path.getPath());
 	}
 }

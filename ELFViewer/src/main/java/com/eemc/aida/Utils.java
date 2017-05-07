@@ -123,7 +123,7 @@ public final class Utils
 		}
 		catch (Exception e)
 		{
-			return "反编译失败" + e.toString();
+			return "ERROR:" + e.toString();
 		}
 		return sb.toString();
 	}

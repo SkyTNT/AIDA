@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+		
+	<item
+		android:id="@+id/action_find"
+		android:icon="@drawable/ic_filter_outline"
+		android:showAsAction="never"/>
+	<item
+		android:id="@+id/action_hex_view"
+		android:icon="@drawable/ic_hexagon_outline"
+		android:showAsAction="never"/>
+    
+</menu>

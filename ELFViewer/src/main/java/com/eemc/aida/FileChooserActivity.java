@@ -24,7 +24,7 @@ public class FileChooserActivity extends AppCompatActivity
 		setContentView(R.layout.file_chooser);
 
 		setResult(RESULT_CANCELED);
-		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		String pathString = null;
 		try
 		{
@@ -37,6 +37,14 @@ public class FileChooserActivity extends AppCompatActivity
 		currentPath = new File(pathString);
 
 		openDirectory(currentPath);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		if(item.getItemId() == android.R.id.home)
+			finish();
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void select(File file)
@@ -88,7 +96,7 @@ public class FileChooserActivity extends AppCompatActivity
 		@Override
 		public int getCount()
 		{
-			if (currentPath.getPath().lastIndexOf("/") != -1)
+			if (currentPath.getPath().lastIndexOf("/") != -1 || currentPath.getPath().equals("/"))
 				return filesInCurrentPath.size() + 1;
 			if (filesInCurrentPath.size() == 0)
 				return 1;
@@ -112,7 +120,7 @@ public class FileChooserActivity extends AppCompatActivity
 		{
 			CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.file_chooser_card_view, null);
 
-			if (currentPath.getPath().lastIndexOf("/") != -1)
+			if (currentPath.getPath().lastIndexOf("/") != -1 || currentPath.getPath().equals("/") )
 			{
 				if (p1 == 0)
 				{
@@ -128,9 +136,12 @@ public class FileChooserActivity extends AppCompatActivity
 							@Override
 							public void onClick(View p1)
 							{
-								if (currentPath.getPath().lastIndexOf("/") != -1)
+								if (currentPath.getPath().lastIndexOf("/") != -1 || currentPath.getPath().equals("/"))
 								{
-									File lastFile = new File(currentPath.getPath().substring(0, currentPath.getPath().lastIndexOf("/")));
+									String pathStr = currentPath.getPath().substring(0, currentPath.getPath().lastIndexOf("/"));
+									if(pathStr.isEmpty())
+										pathStr = "/";
+									File lastFile = new File(pathStr);
 									openDirectory(lastFile);
 								}
 							}
