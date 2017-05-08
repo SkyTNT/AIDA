@@ -2,12 +2,12 @@ package com.eemc.aida.elf;
 import com.eemc.aida.*;
 import java.util.*;
 
-public class Dump
+public class Dumper
 {
 	public byte[] bs;
 	public String path;
 	public Elf elf;
-	public Dump(String path)
+	public Dumper(String path)
 	{
 		this.path = path;
 		bs = Utils.readFile(path);

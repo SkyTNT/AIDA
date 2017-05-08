@@ -6,13 +6,13 @@ import java.util.*;
 import android.widget.*;
 import com.eemc.aida.*;
 
-public class AIDAView extends View
+public class ELFViewerView extends View
 {
 	Paint p=new Paint();
 
 	static HashMap<Integer,Integer> colors=new HashMap<Integer,Integer>();
 
-	public AIDAView(Context con)
+	public ELFViewerView(Context con)
 	{
 		super(con);
 	}

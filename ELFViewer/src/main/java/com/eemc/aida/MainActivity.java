@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity
 
 		loadProjectsData();
 		refreshProjectCardViews();
-		copyBin();
-
+		
 		ActionBar supportActionBar=getSupportActionBar();
 		supportActionBar.setTitle(R.string.app_name);
 		supportActionBar.setSubtitle(R.string.main_subtitle_projects);
@@ -158,24 +157,6 @@ public class MainActivity extends AppCompatActivity
 			String projectItem = preferences.getString(new Integer(index).toString(), null);
 			if (projectItem != null)
 				projectItems.add(projectItem);
-		}
-	}
-
-	private void copyBin()
-	{
-		try
-		{
-			byte[]b=new byte[240844];
-			InputStream in=getAssets().open("disassembler");
-			in.read(b);
-			in.close();
-			OutputStream out=openFileOutput("disassembler", MODE_WORLD_WRITEABLE | MODE_WORLD_READABLE);
-			out.write(b);
-			out.close();
-			Runtime.getRuntime().exec("chmod 777 /data/data/com.eemc.aida/files/disassembler");
-		}
-		catch (Exception e)
-		{
 		}
 	}
 

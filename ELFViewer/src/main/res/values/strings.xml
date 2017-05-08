@@ -27,4 +27,8 @@
 	<string name="elf_viewer_title">ELF Viewer</string>
 	<string name="executable_runtime_title">Running Executable</string>
 	<string name="executable_runtime_edit">New Instruction</string>
+	<string name="viewer_action_search">Search</string>
+	<string name="viewer_action_hex_view">Hex View</string>
+	<string name="asm_code_title">ASM Codes</string>
+	
 </resources>

@@ -11,7 +11,7 @@ public class LoadingActivity extends AppCompatActivity
 {
 	private LoadingActivityUIHandler mUIHandler;
 	private AppCompatTextView countTextView;
-	private Dump dumper;
+	private Dumper dumper;
 	private String filePath;
 	private int symbolNum;
 	
@@ -24,7 +24,7 @@ public class LoadingActivity extends AppCompatActivity
 		
 		mUIHandler = new LoadingActivityUIHandler();
 		filePath = getIntent().getExtras().getString(TAG_FILE_PATH);
-		dumper = new Dump(filePath);
+		dumper = new Dumper(filePath);
 		countTextView = (AppCompatTextView) findViewById(R.id.loading_elf_text_view_message_count);
 		ELFViewerActivity.loadedSymbols = new Vector<Symbol>();
 		
@@ -91,5 +91,11 @@ public class LoadingActivity extends AppCompatActivity
 	public static void startThisActivity(Context context, File path)
 	{
 		startThisActivity(context, path.getPath());
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		
 	}
 }

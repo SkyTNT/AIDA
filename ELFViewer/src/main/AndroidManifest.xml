@@ -43,6 +43,11 @@
 			android:label="@string/file_chooser_title">
     	</activity>
 		
+		<activity
+			android:name=".ASMCodeActivity"
+			android:label="@string/asm_code_title">
+    	</activity>
+		
 	</application>
 
 </manifest>

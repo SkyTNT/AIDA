@@ -6,20 +6,21 @@ import android.view.*;
 import android.widget.*;
 import com.eemc.aida.elf.*;
 import com.eemc.aida.*;
+import android.support.v7.widget.*;
 
 public class HexView extends RelativeLayout
 {
-	Dump dumper;
+	Dumper dumper;
 	int w,h;
 	int line;
 	View bar;
 	boolean chose=false;
 	int choseblockaddr,choseblocksize;
 
-	public TextView[] addrs=new TextView[20];
-	public TextView[] tvs=new TextView[160];
+	public AppCompatTextView[] addrs=new AppCompatTextView[20];
+	public AppCompatTextView[] tvs=new AppCompatTextView[160];
 
-	public HexView(Context con, int width, int height, Dump d)
+	public HexView(Context con, int width, int height, Dumper d)
 	{
 		super(con);
 		dumper = d;
@@ -30,9 +31,9 @@ public class HexView extends RelativeLayout
 		bar.setBackgroundColor(Color.GRAY);
 		bar.setX(w - w / 16);
 
-		for (int i=0;i < 20;i++)
+		for (int i=0;i < 20;++i)
 		{
-			addrs[i] = new TextView(con);
+			addrs[i] = new AppCompatTextView(con);
 			addrs[i].setX(0);
 			addrs[i].setY(i * (height / 20));
 			addrs[i].setTextColor(0xffaeda00);
@@ -41,11 +42,11 @@ public class HexView extends RelativeLayout
 		}
 
 		int w2=width / 2;
-		for (int ix=0;ix < 8;ix++)
+		for (int ix=0;ix < 8;++ix)
 		{
-			for (int iy=0;iy < 20;iy++)
+			for (int iy=0;iy < 20;++iy)
 			{
-				tvs[ix + iy * 8] = new TextView(con);
+				tvs[ix + iy * 8] = new AppCompatTextView(con);
 				TextView tv=tvs[ix + iy * 8];
 				tv.setX(width / 2 + ix * (w2 / 8));
 				tv.setY(iy * (height / 20));
@@ -62,8 +63,8 @@ public class HexView extends RelativeLayout
 	public void scrollToLine(int l)
 	{
 		line = l;
-
-		for (int i=0;i < 20;i++)
+		
+		for (int i=0;i < 20;++i)
 		{
 
 			int addr=(i + line) * 8;
@@ -80,9 +81,9 @@ public class HexView extends RelativeLayout
 			addrs[i].setText(sn + Utils.i2hex(addr));
 		}
 
-		for (int ix=0;ix < 8;ix++)
+		for (int ix=0;ix < 8;++ix)
 		{
-			for (int iy=0;iy < 20;iy++)
+			for (int iy=0;iy < 20;++iy)
 			{
 				TextView tv=tvs[ix + iy * 8];
 				tv.setText(Utils.b2hex(dumper.bs[ix + (iy + line) * 8]));

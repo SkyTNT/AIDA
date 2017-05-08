@@ -18,4 +18,7 @@
 	<string name="file_chooser_title">选择文件</string>
 	<string name="elf_viewer_title">ELF查看器</string>
 	<string name="executable_runtime_title">终端控制台</string>
+	<string name="viewer_action_search">搜索</string>
+	<string name="viewer_action_hex_view">十六进制图形</string>
+	<string name="asm_code_title">汇编代码</string>
 </resources>
