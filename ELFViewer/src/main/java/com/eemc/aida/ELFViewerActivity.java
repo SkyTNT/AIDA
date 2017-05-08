@@ -186,6 +186,18 @@ public class ELFViewerActivity extends AppCompatActivity
 						int addr = sym.value;
 						String result=Objdump.dump(ELFViewerActivity.this,false,addr,sym.size + addr,path);
 						ASMCodeActivity.startThisActivity(ELFViewerActivity.this,result,sym);
+						/*
+						 vhex.setChoose(addr, s);
+						 vhex.scrollToLine(addr / 8);
+						 vhex.memLine = addr / 8;
+						 byte[] basecode=Utils.cp(dumper.bs, sym.value - 1, sym.size);
+						 String codes="";
+						 for (int i=0;i < sym.size / 2;i++)
+						 {
+						 byte[]co=Utils.cp(basecode, i * 2, 2);
+						 codes += Utils.disassemble(0, Utils.b2i(co)) + "\n";
+						 }
+						*/
 					}
 				}
 
