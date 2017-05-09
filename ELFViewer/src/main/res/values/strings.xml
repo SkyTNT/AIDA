@@ -30,5 +30,9 @@
 	<string name="viewer_action_search">Search</string>
 	<string name="viewer_action_hex_view">Hex View</string>
 	<string name="asm_code_title">ASM Codes</string>
-	
+	<string name="viewer_choose_disassmebler">Choose Disassmebler</string>
+	<string-array name="viewer_disassmebler">
+		<item>OBJDUMP</item>
+		<item>BIN2ASM</item>
+	</string-array>
 </resources>

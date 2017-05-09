@@ -41,6 +41,5 @@ public class Objdump extends ExecutableFileRunner
 		{
 			return e.toString();
 		}
-		//return null;
 	}
 }

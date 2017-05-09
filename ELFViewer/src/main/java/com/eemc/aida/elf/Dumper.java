@@ -52,7 +52,7 @@ public class Dumper
 		}
 
 
-		for (int i=0;i < elf.hdr.phnum;i++)
+		for (int i=0;i < elf.hdr.phnum;++i)
 		{
 			byte[]ph=Utils.cp(bs, h.phoff + i * h.phentsize, h.phentsize);
 			Segment phdr = new Segment();

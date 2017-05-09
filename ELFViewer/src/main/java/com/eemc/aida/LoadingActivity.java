@@ -56,6 +56,11 @@ public class LoadingActivity extends AppCompatActivity
 						}
 					}
 				}
+				
+				Objdump.prepare(LoadingActivity.this);
+				BIN2ASM.prepare(LoadingActivity.this);
+				
+				
 				Message msg=new Message();
 				msg.what = 1;
 				mUIHandler.sendMessage(msg);

@@ -35,8 +35,6 @@ public class ELFViewerActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.viewer);
-		
-		Objdump.prepare(this);
 
 		path = this.getIntent().getExtras().getString(TAG_FILE_PATH);
 		dumper = new Dumper(path);
@@ -108,8 +106,6 @@ public class ELFViewerActivity extends AppCompatActivity
 		 }
 		 });
 		 */
-
-		initCards();
 	}
 
 	@Override
@@ -171,7 +167,7 @@ public class ELFViewerActivity extends AppCompatActivity
 				}
 			}
 		}
-		
+
 		listView.setAdapter(new SymbolAdapter());
 		listView.setFastScrollEnabled(true);
 		listView.setOnItemClickListener(new ListView.OnItemClickListener()
@@ -180,92 +176,63 @@ public class ELFViewerActivity extends AppCompatActivity
 				@Override
 				public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4)
 				{
-					Symbol sym=showingSymbols.get(p3);
+					final Symbol sym=showingSymbols.get(p3);
 					if (sym.type == 2)
 					{
-						int addr = sym.value;
-						String result=Objdump.dump(ELFViewerActivity.this,false,addr,sym.size + addr,path);
-						ASMCodeActivity.startThisActivity(ELFViewerActivity.this,result,sym);
+						final int addr = sym.value;
+
+						new AlertDialog.Builder(ELFViewerActivity.this).setTitle(R.string.viewer_choose_disassmebler).setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener()
+							{
+
+								@Override
+								public void onClick(DialogInterface p1, int p2)
+								{
+									p1.dismiss();
+								}
+
+
+							}).setItems(R.array.viewer_disassmebler, new DialogInterface.OnClickListener()
+							{
+
+								@Override
+								public void onClick(DialogInterface p1, int p2)
+								{
+									switch (p2)
+									{
+										case 0:
+											{
+												String result=Objdump.dump(ELFViewerActivity.this, false, addr, sym.size + addr, path);
+												ASMCodeActivity.startThisActivity(ELFViewerActivity.this, result, sym);
+												break;
+											}
+										case 1:
+											{
+												byte[] basecode=Utils.cp(dumper.bs, sym.value - 1, sym.size);
+												String codes=new String();
+												for (int i=0;i < sym.size / 2;++i)
+												{
+													byte[]co = Utils.cp(basecode, i * 2, 2);
+													codes += BIN2ASM.dump(ELFViewerActivity.this, 0, Utils.b2i(co)) + "\n";
+												}
+												ASMCodeActivity.startThisActivity(ELFViewerActivity.this, codes, sym);
+												break;
+											}
+									}
+								}
+
+
+							}).show();
+
 						/*
-						 vhex.setChoose(addr, s);
+						 vhex.setChoose(addr, sym.size);
 						 vhex.scrollToLine(addr / 8);
 						 vhex.memLine = addr / 8;
-						 byte[] basecode=Utils.cp(dumper.bs, sym.value - 1, sym.size);
-						 String codes="";
-						 for (int i=0;i < sym.size / 2;i++)
-						 {
-						 byte[]co=Utils.cp(basecode, i * 2, 2);
-						 codes += Utils.disassemble(0, Utils.b2i(co)) + "\n";
-						 }
-						*/
+						 */
 					}
 				}
 
 
 			});
-	}
-
-	private void initCards()
-	{
-		/*
-
-		 RelativeLayout rsyms=new RelativeLayout(this);
-		 symlist = new ListView(this);
-		 symlist.setFastScrollEnabled(true);
-		 symlist.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-		 @Override
-		 public void onItemClick(AdapterView<?> p1, View p2, int p3, long p4)
-		 {
-
-		 }
-		 });
-		 symad = new SymbolAdapter(this);
-		 symlist.setAdapter(symad);
-		 rsyms.addView(symlist, width, height - height / 10 - height / 15);
-		 symsearch = new EditText(this);
-		 symsearch.setHint(R.string.search_menu_title);
-		 symsearch.setY(-height / 15);
-		 symsearch.addTextChangedListener(new TextWatcher(){
-
-		 @Override
-		 public void beforeTextChanged(CharSequence p1, int p2, int p3, int p4)
-		 {}
-		 @Override
-		 public void onTextChanged(CharSequence p1, int p2, int p3, int p4)
-		 {}
-		 @Override
-		 public void afterTextChanged(Editable p1)
-		 {
-		 symad.showing.clear();
-		 for (int i=0;i < loadedSymbols.size();++i)
-		 {
-		 if (loadedSymbols.get(i).demangledName.contains(p1.toString()))
-		 {
-		 symad.showing.add(i);
-		 }
-		 }
-		 symad.notifyDataSetChanged();
-		 symlist.invalidate();
-		 }
-		 });
-		 rsyms.addView(symsearch, width, height / 15);
-		 addCardView(0, "符号表", rsyms);
-
-
-		 RelativeLayout rHex=new RelativeLayout(this);
-		 vhex = new HexView(this, width, height - height / 10 - height / 15, dumper);
-		 rHex.addView(vhex, width, height - height / 10 - height / 15);
-		 addCardView(1, "HEX视图", rHex);
-
-		 RelativeLayout rAIDA=new RelativeLayout(this);
-		 AIDAView vAIDA=new AIDAView(this);
-		 rAIDA.addView(vAIDA, width, height - height / 10 - height / 15);
-		 addCardView(2, "AIDA视图", rAIDA);
-
-
-
-		 setCardView(0);
-		 */
 	}
 
 	private class SymbolAdapter extends BaseAdapter

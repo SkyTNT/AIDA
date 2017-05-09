@@ -109,25 +109,6 @@ public final class Utils
 		return b2l(cp(res, start, count));
 	}
 
-	static public String disassemble(int mode, long given)
-	{
-		StringBuilder sb=new StringBuilder();
-		try
-		{
-			byte[] b=new byte[1];
-			InputStream r=Runtime.getRuntime().exec(new String[]{"/data/data/com.eemc.aida/files/disassembler",mode + "","" + given}).getInputStream();
-			while (r.read(b) != -1)
-			{
-				sb.append(new String(b));
-			}
-		}
-		catch (Exception e)
-		{
-			return "ERROR:" + e.toString();
-		}
-		return sb.toString();
-	}
-
 	public static native String demangle(String name);
 	
 	static

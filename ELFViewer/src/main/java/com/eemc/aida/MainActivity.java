@@ -10,6 +10,7 @@ import android.view.View.*;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
+import com.eemc.aida.elf.*;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity
 
 		loadProjectsData();
 		refreshProjectCardViews();
-		
+
 		ActionBar supportActionBar=getSupportActionBar();
 		supportActionBar.setTitle(R.string.app_name);
 		supportActionBar.setSubtitle(R.string.main_subtitle_projects);
@@ -38,14 +39,14 @@ public class MainActivity extends AppCompatActivity
 					startActivityForResult(new Intent(MainActivity.this, FileChooserActivity.class), REQUEST_CODE_CHOOSE_FILE);
 				}
 			});
-			
+
 		FloatingActionButton buttonGCCTools=(FloatingActionButton) findViewById(R.id.main_more_button);
 		buttonGCCTools.setImageResource(R.drawable.ic_puzzle);
 		buttonGCCTools.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View p1)
 				{
-					new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_gcc_tools).setPositiveButton(android.R.string.cancel,new DialogInterface.OnClickListener()
+					new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_gcc_tools).setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener()
 						{
 
 							@Override
@@ -53,30 +54,30 @@ public class MainActivity extends AppCompatActivity
 							{
 								p1.dismiss();
 							}
-							
-						
-					}).setItems(R.array.main_gcc_tool_items,new DialogInterface.OnClickListener()
+
+
+						}).setItems(R.array.main_gcc_tool_items, new DialogInterface.OnClickListener()
 						{
 
 							@Override
 							public void onClick(DialogInterface p1, int p2)
 							{
-								switch(p2)
+								switch (p2)
 								{
-								case 0:
-									RuntimeActivity.startThisActivity(MainActivity.this,"");
-									break;
-								case 1:
-									break;
-								case 2:
-									break;
-								case 3:
-									break;
+									case 0:
+										RuntimeActivity.startThisActivity(MainActivity.this, "");
+										break;
+									case 1:
+										break;
+									case 2:
+										break;
+									case 3:
+										break;
 								}
 							}
-							
-						
-					}).show();
+
+
+						}).show();
 				}
 			});
     }
@@ -108,17 +109,8 @@ public class MainActivity extends AppCompatActivity
 					return;
 				}
 			}
-			byte byteFileHeader[]=new byte[4];
-			try
-			{
-				FileInputStream fileInputStream=new FileInputStream(path);
-				fileInputStream.read(byteFileHeader);
-				fileInputStream.close();
-			}
-			catch (IOException ioException)
-			{}
 
-			if (byteFileHeader[0] == 0x7f && byteFileHeader[1] == 0x45 && byteFileHeader[2] == 0x4c && byteFileHeader[3] == 0x46)
+			if (isValidELFFile(new File(path)))
 			{
 				projectItems.add(path);
 				refreshProjectCardViews();
@@ -171,6 +163,19 @@ public class MainActivity extends AppCompatActivity
 		preferencesEdtitor.commit();
 	}
 
+	private boolean isValidELFFile(File file)
+	{
+		try
+		{
+			new Dumper(file.getPath());
+			return true;
+		}
+		catch (Throwable throwable)
+		{
+			return false;
+		}
+	}
+
 	private class ProjectCardViewAdapter extends BaseAdapter
 	{
 		@Override
@@ -208,7 +213,36 @@ public class MainActivity extends AppCompatActivity
 						File file = new File(path);
 						if (file.exists())
 						{
-							LoadingActivity.startThisActivity(MainActivity.this,path);
+							if(isValidELFFile(file))
+							{
+								LoadingActivity.startThisActivity(MainActivity.this, path);
+							}
+							else
+							{
+								new AlertDialog.Builder(MainActivity.this).setTitle(R.string.main_is_not_elf_file).setMessage(R.string.main_is_not_elf_file_message).setIcon(R.drawable.ic_file_document).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+									{
+
+										@Override
+										public void onClick(DialogInterface p1, int p2)
+										{
+											p1.dismiss();
+										}
+
+
+									}).setNegativeButton(R.string.main_delete_this_project, new DialogInterface.OnClickListener()
+									{
+
+										@Override
+										public void onClick(DialogInterface p1, int p2)
+										{
+											projectItems.remove(path);
+											refreshProjectCardViews();
+											p1.dismiss();
+										}
+
+
+									}).show();
+							}
 						}
 						else
 						{
