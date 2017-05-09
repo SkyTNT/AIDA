@@ -9,7 +9,7 @@ public class BIN2ASM extends ExecutableFileRunner
 		copyBinFile(context,"disassembler");
 	}
 
-	public static String dump(Context context,int mode,long given)
+	public static String cast(Context context,int mode,long given)
 	{
 		String exe_path = "/data/data/"+context.getPackageName()+"/files/disassembler";
 		StringBuilder sb=new StringBuilder();

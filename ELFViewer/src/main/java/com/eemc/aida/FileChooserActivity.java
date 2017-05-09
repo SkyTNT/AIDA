@@ -16,7 +16,7 @@ public class FileChooserActivity extends AppCompatActivity
 	private Vector<File> filesInCurrentPath;
 
 	public final static String TAG_FILE_PATH = "file_path";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -42,7 +42,7 @@ public class FileChooserActivity extends AppCompatActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		if(item.getItemId() == android.R.id.home)
+		if (item.getItemId() == android.R.id.home)
 			finish();
 		return super.onOptionsItemSelected(item);
 	}
@@ -85,9 +85,9 @@ public class FileChooserActivity extends AppCompatActivity
 	{
 		Intent data = new Intent();
 		Bundle extras = new Bundle();
-		extras.putString(TAG_FILE_PATH,file.getPath());
+		extras.putString(TAG_FILE_PATH, file.getPath());
 		data.putExtras(extras);
-		setResult(RESULT_OK,data);
+		setResult(RESULT_OK, data);
 		finish();
 	}
 
@@ -120,7 +120,7 @@ public class FileChooserActivity extends AppCompatActivity
 		{
 			CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.file_chooser_card_view, null);
 
-			if (currentPath.getPath().lastIndexOf("/") != -1 || currentPath.getPath().equals("/") )
+			if (currentPath.getPath().lastIndexOf("/") != -1 || currentPath.getPath().equals("/"))
 			{
 				if (p1 == 0)
 				{
@@ -139,7 +139,7 @@ public class FileChooserActivity extends AppCompatActivity
 								if (currentPath.getPath().lastIndexOf("/") != -1 || currentPath.getPath().equals("/"))
 								{
 									String pathStr = currentPath.getPath().substring(0, currentPath.getPath().lastIndexOf("/"));
-									if(pathStr.isEmpty())
+									if (pathStr.isEmpty())
 										pathStr = "/";
 									File lastFile = new File(pathStr);
 									openDirectory(lastFile);
@@ -225,18 +225,18 @@ public class FileChooserActivity extends AppCompatActivity
 		}
 
 	}
-	
-	public static void startThisActivity(Activity context,File path,int requestCode)
+
+	public static void startThisActivity(Activity context, File path, int requestCode)
 	{
-		startThisActivity(context,path.getPath(),requestCode);
+		startThisActivity(context, path.getPath(), requestCode);
 	}
-	
-	public static void startThisActivity(Activity context,String path,int requestCode)
+
+	public static void startThisActivity(Activity context, String path, int requestCode)
 	{
-		Intent intent = new Intent(context,FileChooserActivity.class);
+		Intent intent = new Intent(context, FileChooserActivity.class);
 		Bundle extras = new Bundle();
-		extras.putString(TAG_FILE_PATH,path);
+		extras.putString(TAG_FILE_PATH, path);
 		intent.putExtras(extras);
-		context.startActivityForResult(intent,0);
+		context.startActivityForResult(intent, 0);
 	}
 }

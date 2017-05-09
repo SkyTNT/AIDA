@@ -212,7 +212,7 @@ public class ELFViewerActivity extends AppCompatActivity
 												for (int i=0;i < sym.size / 2;++i)
 												{
 													byte[]co = Utils.cp(basecode, i * 2, 2);
-													codes += BIN2ASM.dump(ELFViewerActivity.this, 0, Utils.b2i(co)) + "\n";
+													codes += BIN2ASM.cast(ELFViewerActivity.this, 0, Utils.b2i(co)) + "\n";
 												}
 												ASMCodeActivity.startThisActivity(ELFViewerActivity.this, codes, sym);
 												break;

@@ -110,7 +110,7 @@ public final class Utils
 	}
 
 	public static native String demangle(String name);
-	
+
 	static
 	{
 		System.loadLibrary("elf-viewer");

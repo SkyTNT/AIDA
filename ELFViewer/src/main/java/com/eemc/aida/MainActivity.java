@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity
 						File file = new File(path);
 						if (file.exists())
 						{
-							if(isValidELFFile(file))
+							if (isValidELFFile(file))
 							{
 								LoadingActivity.startThisActivity(MainActivity.this, path);
 							}

@@ -15,10 +15,10 @@ public class ASMCodeActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.asm_code);
-		
+
 		AppCompatTextView textViewCodes = (AppCompatTextView)findViewById(R.id.asm_code_text_view_codes);
 		textViewCodes.setText(getIntent().getExtras().getString(TAG_ASM_CODE));
-		
+
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setSubtitle(getIntent().getExtras().getString(TAG_SYMBOL_NAME));
 	}
@@ -26,17 +26,17 @@ public class ASMCodeActivity extends AppCompatActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		if(item.getItemId()==android.R.id.home)
+		if (item.getItemId() == android.R.id.home)
 			finish();
 		return super.onOptionsItemSelected(item);
 	}
-	
-	public static void startThisActivity(Context context,String asmCodes,Symbol symbol)
+
+	public static void startThisActivity(Context context, String asmCodes, Symbol symbol)
 	{
-		Intent intent = new Intent(context,ASMCodeActivity.class);
+		Intent intent = new Intent(context, ASMCodeActivity.class);
 		Bundle extras = new Bundle();
-		extras.putString(TAG_ASM_CODE,asmCodes);
-		extras.putString(TAG_SYMBOL_NAME,symbol.name);
+		extras.putString(TAG_ASM_CODE, asmCodes);
+		extras.putString(TAG_SYMBOL_NAME, symbol.name);
 		intent.putExtras(extras);
 		context.startActivity(intent);
 	}

@@ -14,20 +14,20 @@ public class LoadingActivity extends AppCompatActivity
 	private Dumper dumper;
 	private String filePath;
 	private int symbolNum;
-	
+
 	public static final String TAG_FILE_PATH = "file_path";
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.loading_elf);
-		
+
 		mUIHandler = new LoadingActivityUIHandler();
 		filePath = getIntent().getExtras().getString(TAG_FILE_PATH);
 		dumper = new Dumper(filePath);
 		countTextView = (AppCompatTextView) findViewById(R.id.loading_elf_text_view_message_count);
 		ELFViewerActivity.loadedSymbols = new Vector<Symbol>();
-		
+
 		new Thread()
 		{
 			@Override
@@ -40,7 +40,7 @@ public class LoadingActivity extends AppCompatActivity
 						symbolNum += dumper.getSymNum(sec);
 					}
 				}
-				
+
 				for (Section sec:dumper.elf.sections)
 				{
 					if (sec.type == 2 || sec.type == 11)
@@ -56,34 +56,34 @@ public class LoadingActivity extends AppCompatActivity
 						}
 					}
 				}
-				
+
 				Objdump.prepare(LoadingActivity.this);
 				BIN2ASM.prepare(LoadingActivity.this);
-				
-				
+
+
 				Message msg=new Message();
 				msg.what = 1;
 				mUIHandler.sendMessage(msg);
 			}
 		}.start();
 	}
-	
+
 	private class LoadingActivityUIHandler extends Handler
 	{
 		@Override
 		public void handleMessage(Message msg)
 		{
 			super.handleMessage(msg);
-			if(msg.what == 0)
-				countTextView.setText(new Integer((int)msg.obj).toString() + " / " +new Integer(symbolNum).toString());
-			else if(msg.what == 1)
+			if (msg.what == 0)
+				countTextView.setText(new Integer((int)msg.obj).toString() + " / " + new Integer(symbolNum).toString());
+			else if (msg.what == 1)
 			{
-				ELFViewerActivity.startThisActivity(LoadingActivity.this,filePath);
+				ELFViewerActivity.startThisActivity(LoadingActivity.this, filePath);
 				finish();
 			}
 		}
 	}
-	
+
 	public static void startThisActivity(Context context, String path)
 	{
 		Intent intent = new Intent(context, LoadingActivity.class);
@@ -101,6 +101,6 @@ public class LoadingActivity extends AppCompatActivity
 	@Override
 	public void onBackPressed()
 	{
-		
+
 	}
 }
