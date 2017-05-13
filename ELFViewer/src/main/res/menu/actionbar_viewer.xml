@@ -1,12 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 		
 	<item
-		android:label="@string/viewer_action_search"
+		android:name="@string/viewer_action_search"
 		android:id="@+id/action_find"
 		android:icon="@drawable/ic_filter_outline"
 		android:showAsAction="ifRoom"/>
 	<item
-		android:label="@string/viewer_action_hex_view"
+		android:name="@string/viewer_action_hex_view"
 		android:id="@+id/action_hex_view"
 		android:icon="@drawable/ic_hexagon_outline"
 		android:showAsAction="never"/>

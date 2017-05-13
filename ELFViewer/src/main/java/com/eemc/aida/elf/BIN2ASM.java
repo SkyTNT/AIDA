@@ -19,7 +19,7 @@ public class BIN2ASM extends ExecutableFileRunner
 			InputStream r=Runtime.getRuntime().exec(new String[]{exe_path,mode + "","" + given}).getInputStream();
 			byte[] buffer=new byte[r.available()];
 			r.read(buffer);
-			sb.append(buffer);
+			sb.append(new String(buffer));
 		}
 		catch (Exception e)
 		{
