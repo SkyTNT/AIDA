@@ -15,7 +15,8 @@ public class ASMCodeActivity extends AppCompatActivity
 {
 	public static final String TAG_ASM_CODE = "asm_code";
 	public static final String TAG_SYMBOL_NAME = "symbol_name";
-	static String regnames[]=  { "a1", "a2", "a3", "a4","r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15","sl",  "fp",  "ip",  "sp",  "lr",  "pc", "WR", "SB", "SL",  "FP",  "IP",  "SP",  "LR",  "PC"};
+	static String regnames="(a[1234]|r(0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15)|sl|fp|ip|sp|lr|pc|WR|SB|SL|FP|IP|SP|LR|PC)";
+	
 	SpannableString ss;
 	AppCompatTextView tv;
 
@@ -31,35 +32,22 @@ public class ASMCodeActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.asm_code);
-
 		tv= (AppCompatTextView)findViewById(R.id.asm_code_text_view_codes);
-		tv.setTextColor(Color.BLUE);
+		tv.setTextColor(Color.BLACK);
 		Thread initHL=new Thread(new Runnable(){
 				@Override
 				public void run()
 				{
 					ss=new SpannableString(getIntent().getExtras().getString(TAG_ASM_CODE));
 					myhandler.sendEmptyMessage(0);
-					for(String regname:regnames){
-						setTextHighlight(ss,"[(, )\\{\\[]"+regname,Color.GREEN,true);
-						setTextHighlight(ss,regname+"[,\\}\\]\\!]",Color.GREEN,true);
-					}
-
-					setTextHighlight(ss,"<.*>",0xffff00ff,true);
-					setTextHighlight(ss,"0x[0123456789abcdef]*",0xff80a000,true);
-					setTextHighlight(ss,"#[0123456789+-]*",0xff80a000,true);
-					setTextHighlight(ss,"\\{",0xff9999ff,true);
-					setTextHighlight(ss,"\\}",0xff9999ff,true);
-					setTextHighlight(ss,"\\(",0xff00ffff,true);
-					setTextHighlight(ss,"\\)",0xff00ffff,true);
-					setTextHighlight(ss,"\\[",0xff9999ff,true);
-					setTextHighlight(ss,"\\]",0xff9999ff,true);
-					setTextHighlight(ss,"\\:",0xffaeda00,true);	
-					setTextHighlight(ss,"\\+",0xffaeda00,true);	
-					setTextHighlight(ss,"\\-",0xffaeda00,true);	
-					setTextHighlight(ss,"\\!",0xffaeda00,true);	
-					setTextHighlight(ss,"\\&",0xffaeda00,true);	
-					setTextHighlight(ss,"\\*",0xffaeda00,true);	
+					setTextHighlight(ss,"(?<=, )"+regnames+"\\b",0xff006689,true);
+					setTextHighlight(ss,regnames+"(?=[,\\}\\]\\!])",0xff006689,true);
+					setTextHighlight(ss,"<.*>",0xffaa00ff,true);
+					setTextHighlight(ss,"0x[0123456789abcdef]*",0xffff9435,true);
+					setTextHighlight(ss,"#[0123456789+-]*",0xffff9435,true);
+					setTextHighlight(ss,"(?<=\\b)[0123456789abcdef]*(?=( <.*>|\\:))",0xffff9435,true);
+					setTextHighlight(ss,"[\\{\\}\\[\\]\\(\\)\\:\\.,;]",0xff9999ff,true);
+					setTextHighlight(ss,"[\\+\\-\\!\\&\\*]",0xffe05020,true);
 					myhandler.sendEmptyMessage(0);
 				}
 			});
