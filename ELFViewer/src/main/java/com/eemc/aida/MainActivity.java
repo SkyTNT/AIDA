@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity
 			final String path = projectItems.get(p1);
 			CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.main_cardview, null);
 			AppCompatTextView nameView=(AppCompatTextView)cardView.findViewById(R.id.main_cardview_name);
-			nameView.setText(path.substring(path.lastIndexOf("/") + 1));
+			nameView.setText(path.substring(path.lastIndexOf(File.separator) + 1));
 			AppCompatTextView pathView=(AppCompatTextView)cardView.findViewById(R.id.main_cardview_full_path);
 			pathView.setText(path);
 			cardView.setOnClickListener(new OnClickListener(){

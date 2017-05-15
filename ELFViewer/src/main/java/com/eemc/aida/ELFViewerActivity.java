@@ -38,12 +38,12 @@ public class ELFViewerActivity extends AppCompatActivity
 
 		path = this.getIntent().getExtras().getString(TAG_FILE_PATH);
 		dumper = new Dumper(path);
-		setTitle(path.substring(path.lastIndexOf("/") + 1));
+		setTitle(path.substring(path.lastIndexOf(File.separator) + 1));
 		showingSymbols.addAll(loadedSymbols);
 		listView = (ListView) findViewById(R.id.viewer_list_view);
 		search(null);
 		getSupportActionBar().setTitle(R.string.app_name);
-		getSupportActionBar().setSubtitle(path.substring(path.lastIndexOf("/") + 1));
+		getSupportActionBar().setSubtitle(path.substring(path.lastIndexOf(File.separator) + 1));
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		/*menu.setOnMenuItemClickListener(new android.support.v7.widget.PopupMenu.OnMenuItemClickListener(){

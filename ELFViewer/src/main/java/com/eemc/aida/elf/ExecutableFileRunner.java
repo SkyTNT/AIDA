@@ -10,7 +10,7 @@ public class ExecutableFileRunner
 		{
 			InputStream fileInputStream = context.getAssets().open(fileName);
 			String fileFullName = "/data/data/" + context.getPackageName() + "/files/"+fileName;
-			File file = new File(fileFullName.substring(0,fileFullName.lastIndexOf("/")));
+			File file = new File(fileFullName.substring(0,fileFullName.lastIndexOf(File.separator)));
 			file.mkdirs();
 			File file_exe = new File(fileFullName);
 			file_exe.createNewFile();

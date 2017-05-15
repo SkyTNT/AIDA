@@ -96,7 +96,7 @@ public class FileChooserActivity extends AppCompatActivity
 		@Override
 		public int getCount()
 		{
-			if (currentPath.getPath().lastIndexOf("/") != -1 || currentPath.getPath().equals("/"))
+			if (currentPath.getPath().lastIndexOf(File.separator) != -1 || currentPath.getPath().equals(File.separator))
 				return filesInCurrentPath.size() + 1;
 			if (filesInCurrentPath.size() == 0)
 				return 1;
@@ -120,7 +120,7 @@ public class FileChooserActivity extends AppCompatActivity
 		{
 			CardView cardView = (CardView) getLayoutInflater().inflate(R.layout.file_chooser_card_view, null);
 
-			if (currentPath.getPath().lastIndexOf("/") != -1 || currentPath.getPath().equals("/"))
+			if (currentPath.getPath().lastIndexOf(File.separator) != -1 || currentPath.getPath().equals(File.separator))
 			{
 				if (p1 == 0)
 				{
@@ -136,11 +136,11 @@ public class FileChooserActivity extends AppCompatActivity
 							@Override
 							public void onClick(View p1)
 							{
-								if (currentPath.getPath().lastIndexOf("/") != -1 || currentPath.getPath().equals("/"))
+								if (currentPath.getPath().lastIndexOf(File.separator) != -1 || currentPath.getPath().equals(File.separator))
 								{
-									String pathStr = currentPath.getPath().substring(0, currentPath.getPath().lastIndexOf("/"));
+									String pathStr = currentPath.getPath().substring(0, currentPath.getPath().lastIndexOf(File.separator));
 									if (pathStr.isEmpty())
-										pathStr = "/";
+										pathStr = File.separator;
 									File lastFile = new File(pathStr);
 									openDirectory(lastFile);
 								}
